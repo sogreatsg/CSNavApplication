@@ -39,10 +39,46 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var textinput = "nil"
     var checkstate = 0
     var zone = 0
+    var datedayuse = "nil"
+    var datetimeuse = "nil"
+    
+    
+    struct teacherjsonstruct:Decodable{
+        let aka:String
+        let name:String
+    
+    }
+    var arrdatateacher=[teacherjsonstruct]()
+    
+    struct roomjsonstruct:Decodable{
+        let room:String
+          
+    }
+    var arrdataroom=[roomjsonstruct]()
+    
+    struct responjsonstruct:Decodable{
+           let room:String
+             
+       }
+    var arrdatarespon=[responjsonstruct]()
+    var find:String = "non"
+    var type:String = "0"
+    
+    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต"]
+    let t_ENS = ["เอิน", "เอิร์น"]
+    let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส"]
+    let t_KAB = ["คันธารัตย์"]
+    let t_KSB = ["กอบเกียรติ์"]
+    let t_PRV = ["ปรวัติ"]
+    let t_SSP = ["สถิต"]
+    let t_SWK = ["สุวัฒชัย"]
+    let t_PLS = ["ปัดชญาภรณ์","ปัดเชียร์พร","ปัดเชียร์ยาก่อน","พัทยาพร","ปรัชยาพร","ปัดเชียร์ยาภรณ์","รัชญาพร"]
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        readDataTeacher()
+        readDataRoom()
         recordButton.tintColor = .white
        
         locationManager.delegate = self
@@ -59,7 +95,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
       
       
         sceneView.scene = scene
-  
+        
+       
         
 
         let text = "สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย"
@@ -99,7 +136,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
 
     }
     @IBAction func micpress(_ sender: Any) {
-        if (checkstate == 0) {
+        if (checkstate == 1) {
             let text = "ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง"
             speech(text)
         }else{
@@ -203,13 +240,10 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 textinputtemp = result?.bestTranscription.formattedString
                 print(textinputtemp as Any)
                 
-                let alert = UIAlertController(title: "Zone = "+String(self.zone)+" คุณพูดว่า", message: textinputtemp, preferredStyle: .alert)
+                self.postData(textinput: textinputtemp!)
 
-                alert.addAction(UIAlertAction(title: "ใช่", style: .default, handler: nil))
-                alert.addAction(UIAlertAction(title: "ไม่ใช่", style: .cancel, handler: nil))
-
-                self.present(alert, animated: true)
                 
+              
                 self.audioEngine.stop()
                 inputNode.removeTap(onBus: 0)
                 self.recognitionRequest = nil
@@ -349,7 +383,185 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         }
 //            print(knownBeacons)
            
-           
-        
         }
+    
+    func readDataTeacher()  {
+              print("Starting GET Data Teacher")
+              let url = URL(string:"http://172.25.176.251:8084/WebApplication/jsondata.json")
+              URLSession.shared.dataTask(with: url!) {
+                  (data, response, error) in
+                  do{if error == nil{
+                      self.arrdatateacher = try JSONDecoder().decode([teacherjsonstruct].self, from: data!)
+                      for mainarr in self.arrdatateacher{
+                        print(mainarr.aka,":",mainarr.name)
+                          
+                      }
+                      print("number of list",self.arrdatateacher.count)
+                      }
+                  }catch{
+                      print("Error in get json data teacher")
+                  }
+              }.resume()
+    }
+    func readDataRoom()  {
+        print("Starting GET Data Room")
+        let url = URL(string:"http://172.25.176.251:8084/WebApplication/roomjsondata.json")
+//        let url = URL(string:"http://172.25.176.251:8084/WebApplication/output.json")
+//        let url = URL(string:"http://172.25.176.251:8084/WebApplication/get.jsp")
+        
+        URLSession.shared.dataTask(with: url!) {
+            (data, response, error) in
+            do{if error == nil{
+               
+                self.arrdataroom = try JSONDecoder().decode([roomjsonstruct].self, from: data!)
+                for mainarr in self.arrdataroom{
+                    print(mainarr.room)
+                }
+                print("number of list",self.arrdataroom.count)
+                }
+            }catch{
+                print("Error in get json data room")
+            }
+        }.resume()
+    }
+    
+    func postData(textinput:String) {
+        type = "0"
+        let formatter1 = DateFormatter()
+               let formatter2 = DateFormatter()
+                      //2016-12-08 03:37:22 +0000
+               formatter1.dateFormat = "EEEE"
+               formatter2.dateFormat = "HH:mm"
+               let now = Date()
+               let dateString = formatter1.string(from:now)
+               datedayuse = dateString
+               let dateString2 = formatter2.string(from: now)
+               datetimeuse = dateString2
+               print("Time Now : ",datedayuse,datetimeuse)
+        
+        for mainarr in self.arrdataroom{
+                         print("Searching....room",mainarr)
+                         if textinput.contains(mainarr.room) {
+                            find = mainarr.room
+                            type = "1"
+                            print("Find = "+find)
+                            break
+                }
+        }
+    
+               
+               for mainarr in self.arrdatateacher{
+                                 print("Searching....Teacher",mainarr)
+                                 if textinput.contains(mainarr.name) {
+                                      find = mainarr.aka
+                                      type = "2"
+                                    print("Find = "+find)
+                                    break
+                           }
+               }
+               for mainarr in self.t_CHR{
+                   print("Searching....CHR",mainarr)
+                       if textinput.contains(mainarr) {
+                           find = "CHR"
+                           type = "2"
+                        print("Find = "+find)
+                          }
+               }
+               for mainarr in self.t_ENS{
+                          print("Searching....ENS",mainarr)
+                              if textinput.contains(mainarr) {
+                               find = "ENS"
+                                  type = "2"
+                                print("Find = "+find)
+                   }
+               }
+               for mainarr in self.t_GDP{
+                   print("Searching....GDP",mainarr)
+                       if textinput.contains(mainarr) {
+                           find = "GDP"
+                           type = "2"
+                        print("Find = "+find)
+                          }
+               }
+               for mainarr in self.t_KAB{
+                   print("Searching....KAB",mainarr)
+                       if textinput.contains(mainarr) {
+                           find = "KAB"
+                           type = "2"
+                        print("Find = "+find)
+                          }
+               }
+               for mainarr in self.t_KSB{
+                   print("Searching....KSB",mainarr)
+                       if textinput.contains(mainarr) {
+                           find = "KSB"
+                           type = "2"
+                          }
+               }
+               for mainarr in self.t_PRV{
+                   print("Searching....PRV",mainarr)
+                       if textinput.contains(mainarr) {
+                           find = "PRV"
+                           type = "2"
+                          }
+               }
+               for mainarr in self.t_SSP{
+                   print("Searching....SSP",mainarr)
+                       if textinput.contains(mainarr) {
+                           find = "SSP"
+                           type = "2";
+                          }
+               }
+               for mainarr in self.t_SWK{
+                   print("Searching....SWK",mainarr)
+                       if textinput.contains(mainarr) {
+                           find = "SWK"
+                           type="2";
+                          }
+               }
+               for mainarr in self.t_PLS{
+                          print("Searching....PLS",mainarr)
+                              if textinput.contains(mainarr) {
+                                  find = "PLS"
+                                  type="2";
+                                 }
+                      }
+        
+        if (type == "1" || type == "2"){
+            let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา", message: find, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
+                print("Push : Yes")
+                let url = URL(string:"http://172.25.176.251:8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type)
+                print(url as Any)
+                URLSession.shared.dataTask(with: url!) {
+                    (data, response, error) in
+                    do{if error == nil{
+                       DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                           print("Done")
+                       })
+                        self.arrdatarespon = try JSONDecoder().decode([responjsonstruct].self, from: data!)
+                        for mainarr in self.arrdatarespon{
+                            print(mainarr.room)
+                        }
+                        print("number of list",self.arrdatarespon.count)
+                        }
+                    }catch{
+                        print("Error in get json data room")
+                    }
+                }.resume()
+            }))
+            alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { action in
+                print("Push : No")
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            let alert = UIAlertController(title: "ไม่พบข้อความที่คุณค้นหา กรุณาลองใหม่อีกครั้ง", message: textinput, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "try agian", style: .default, handler: { action in
+                print("try agian")
+             }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
 }

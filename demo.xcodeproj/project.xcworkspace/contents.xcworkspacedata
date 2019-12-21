@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../arrow.rcproject">
-   </FileRef>
-   <FileRef
       location = "self:">
    </FileRef>
 </Workspace>
