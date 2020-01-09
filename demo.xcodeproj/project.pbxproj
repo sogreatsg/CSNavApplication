@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		51162F1C239032B000541BBC /* demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		51162F1C239032B000541BBC /* CSNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CSNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51162F1F239032B000541BBC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		51162F21239032B000541BBC /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		51162F23239032B000541BBC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -50,7 +50,7 @@
 		51162F1D239032B000541BBC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				51162F1C239032B000541BBC /* demo.app */,
+				51162F1C239032B000541BBC /* CSNav.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,7 +87,7 @@
 			);
 			name = demo;
 			productName = demo;
-			productReference = 51162F1C239032B000541BBC /* demo.app */;
+			productReference = 51162F1C239032B000541BBC /* CSNav.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -296,7 +296,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = kmutnb.demo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CSNav;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -314,7 +314,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = kmutnb.demo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CSNav;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

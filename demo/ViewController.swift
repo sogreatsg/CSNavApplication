@@ -18,9 +18,10 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
 
     @IBOutlet var sceneView: ARSCNView!
   
-
+   
+    var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    
+    var ipserver = "172.20.10.3"
     
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
@@ -39,8 +40,12 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var textinput = "nil"
     var checkstate = 0
     var zone = 0
+    var rssi = 0
     var datedayuse = "nil"
     var datetimeuse = "nil"
+    var scene = SCNScene(named: "art.scnassets/model.scn")
+    
+    var dir = "null"
     
     
     struct teacherjsonstruct:Decodable{
@@ -57,26 +62,37 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var arrdataroom=[roomjsonstruct]()
     
     struct responjsonstruct:Decodable{
-           let room:String
+           let result:String
              
        }
     var arrdatarespon=[responjsonstruct]()
     var find:String = "non"
     var type:String = "0"
+    var respond = "nil"
     
-    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต"]
+    let t_AWS = [""]
+    let t_LPP = ["หรือพล","ลืพล","ลืมพล","ลืมล","ลืมโอน"]
     let t_ENS = ["เอิน", "เอิร์น"]
-    let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส"]
+    let t_ADP = [""]
+    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด"]
+    let t_BLT = [""]
+    let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส","กิ๊บดำผัด","กฤษดาผัก","ปริศฎาพัด"]
     let t_KAB = ["คันธารัตย์"]
     let t_KSB = ["กอบเกียรติ์"]
-    let t_PRV = ["ปรวัติ"]
-    let t_SSP = ["สถิต"]
-    let t_SWK = ["สุวัฒชัย"]
+    let t_NKS = ["ได้ก่อน","นึกก่อน","นิก่อน"]
+    let t_NSN = [""]
     let t_PLS = ["ปัดชญาภรณ์","ปัดเชียร์พร","ปัดเชียร์ยาก่อน","พัทยาพร","ปรัชยาพร","ปัดเชียร์ยาภรณ์","รัชญาพร"]
+    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด"]
+    let t_SSP = ["สถิต"]
+    let t_SWK = ["สุวัฒชัย","สุวรรณชัย","ถ้วย","ช่วย"]
+    let t_TNA = ["ธนภัทร","ธนพัฒน์"]
+    let t_NSD = ["นัดทะวุด","นัดทวุฒิ"]
+    
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+    
         readDataTeacher()
         readDataRoom()
         recordButton.tintColor = .white
@@ -90,12 +106,22 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         sceneView.showsStatistics = false
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/model.scn")!
         
       
-      
-        sceneView.scene = scene
-        
+        sceneView.scene = scene!
+        lm = CLLocationManager()
+        lm.delegate = self
+        lm.distanceFilter = 1000
+        lm.desiredAccuracy = kCLLocationAccuracyKilometer
+        if CLLocationManager.headingAvailable() {
+            lm.headingFilter = 5
+            lm.startUpdatingHeading()
+        }
+       
+
+              // Start location services to get the true heading.
+       
+        locationManager.startUpdatingLocation()
        
         
 
@@ -107,9 +133,11 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         print("viewDidLoad")
         
-        
        
-        let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
+
+        
+//        let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
+        let uuid = UUID(uuidString: "10F86430-1346-11E4-9191-0800200C9A66")
         self.locationManager.requestWhenInUseAuthorization()
         
         // Create a new constraint and add it to the dictionary.
@@ -136,17 +164,17 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
 
     }
     @IBAction func micpress(_ sender: Any) {
-        if (checkstate == 1) {
+        if (checkstate == 0) {
             let text = "ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง"
             speech(text)
         }else{
             
             if audioEngine.isRunning {
-               
+              
                 audioEngine.stop()
                 recognitionRequest?.endAudio()
                 recordButton.isEnabled = false
-             
+                
                 print("StopRecording")
                 recordButton.tintColor = .white
                   
@@ -155,9 +183,9 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                   
               } else {
               
-                
+               
                 startRecording()
-              
+                  
                 print("Recording")
                 recordButton.tintColor = .systemBlue
               }
@@ -229,7 +257,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
 
                 self.textinput = (result?.bestTranscription.formattedString)!
                 isFinal = (result?.isFinal)!
-//                print(self.textinput," + ",isFinal)
                 self.recordButton.isEnabled = true
             }
             
@@ -237,13 +264,12 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             
             if error != nil || isFinal {
                 let textinputtemp:String?
+            
                 textinputtemp = result?.bestTranscription.formattedString
                 print(textinputtemp as Any)
                 
-                self.postData(textinput: textinputtemp!)
-
-                
-              
+                self.postData(textinput: textinputtemp ?? "nil")
+           
                 self.audioEngine.stop()
                 inputNode.removeTap(onBus: 0)
                 self.recognitionRequest = nil
@@ -283,7 +309,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
     
     func speech(_ text: String) {
-        
+    
         print("Start Speech")
         let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string:text)
         speechUtterance.rate = AVSpeechUtteranceMaximumSpeechRate / 2
@@ -347,6 +373,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
         let beaconRegion = region as? CLBeaconRegion
+       
         print("check state")
         if state == .inside {
             checkstate = 1
@@ -369,6 +396,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
              Beacons are categorized by proximity. A beacon can satisfy
              multiple constraints and can be displayed multiple times.
              */
+        
             let knownBeacons = beacons.filter{ $0.proximity != CLProximity.unknown }
             if (knownBeacons.count > 0) {
                 let closestBeacon = knownBeacons[0] as CLBeacon
@@ -377,17 +405,18 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 
                
             }
+        
         if (temp != zone){
             zone = temp
-          
+            rssi = zone
         }
-//            print(knownBeacons)
+
            
         }
     
     func readDataTeacher()  {
               print("Starting GET Data Teacher")
-              let url = URL(string:"http://172.25.176.251:8084/WebApplication/jsondata.json")
+              let url = URL(string:"http://"+ipserver+":8084/WebApplication/jsondata.json")
               URLSession.shared.dataTask(with: url!) {
                   (data, response, error) in
                   do{if error == nil{
@@ -405,9 +434,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
     func readDataRoom()  {
         print("Starting GET Data Room")
-        let url = URL(string:"http://172.25.176.251:8084/WebApplication/roomjsondata.json")
-//        let url = URL(string:"http://172.25.176.251:8084/WebApplication/output.json")
-//        let url = URL(string:"http://172.25.176.251:8084/WebApplication/get.jsp")
+        let url = URL(string:"http://"+ipserver+":8084/WebApplication/roomjsondata.json")
         
         URLSession.shared.dataTask(with: url!) {
             (data, response, error) in
@@ -426,6 +453,10 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
     
     func postData(textinput:String) {
+        
+        let rssiuse = String(rssi)
+       
+       
         type = "0"
         let formatter1 = DateFormatter()
                let formatter2 = DateFormatter()
@@ -449,102 +480,223 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 }
         }
     
+              
+        for mainarr in self.arrdatateacher{
+            print("Searching....Teacher",mainarr)
+            if textinput.contains(mainarr.name) {
+                    find = mainarr.aka
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                
+            }
+        }
+        if type != "2"{
+            for mainarr in self.t_AWS{
                
-               for mainarr in self.arrdatateacher{
-                                 print("Searching....Teacher",mainarr)
-                                 if textinput.contains(mainarr.name) {
-                                      find = mainarr.aka
-                                      type = "2"
-                                    print("Find = "+find)
-                                    break
-                           }
-               }
-               for mainarr in self.t_CHR{
-                   print("Searching....CHR",mainarr)
-                       if textinput.contains(mainarr) {
-                           find = "CHR"
-                           type = "2"
+                    if textinput.contains(mainarr) {
+                        find = "AWS"
+                        type = "2"
                         print("Find = "+find)
-                          }
-               }
-               for mainarr in self.t_ENS{
-                          print("Searching....ENS",mainarr)
-                              if textinput.contains(mainarr) {
-                               find = "ENS"
-                                  type = "2"
-                                print("Find = "+find)
+                        break
+                       }
+            }
+        }
+        if type != "2"{
+        for mainarr in self.t_LPP{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "LPP"
+                    type = "2"
+                    print("Find = "+find)
+                    break
                    }
-               }
-               for mainarr in self.t_GDP{
-                   print("Searching....GDP",mainarr)
-                       if textinput.contains(mainarr) {
-                           find = "GDP"
-                           type = "2"
-                        print("Find = "+find)
-                          }
-               }
-               for mainarr in self.t_KAB{
-                   print("Searching....KAB",mainarr)
-                       if textinput.contains(mainarr) {
-                           find = "KAB"
-                           type = "2"
-                        print("Find = "+find)
-                          }
-               }
-               for mainarr in self.t_KSB{
-                   print("Searching....KSB",mainarr)
-                       if textinput.contains(mainarr) {
-                           find = "KSB"
-                           type = "2"
-                          }
-               }
-               for mainarr in self.t_PRV{
-                   print("Searching....PRV",mainarr)
-                       if textinput.contains(mainarr) {
-                           find = "PRV"
-                           type = "2"
-                          }
-               }
-               for mainarr in self.t_SSP{
-                   print("Searching....SSP",mainarr)
-                       if textinput.contains(mainarr) {
-                           find = "SSP"
-                           type = "2";
-                          }
-               }
-               for mainarr in self.t_SWK{
-                   print("Searching....SWK",mainarr)
-                       if textinput.contains(mainarr) {
-                           find = "SWK"
-                           type="2";
-                          }
-               }
-               for mainarr in self.t_PLS{
-                          print("Searching....PLS",mainarr)
-                              if textinput.contains(mainarr) {
-                                  find = "PLS"
-                                  type="2";
-                                 }
-                      }
-        
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_ENS{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "ENS"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_ADP{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "ADP"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_CHR{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "CHR"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_BLT{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "BLT"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_GDP{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "GDP"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_KAB{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "KAB"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_KSB{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "KSB"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_NKS{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "NKS"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_NSN{
+//            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "NSN"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_PLS{
+            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "PLS"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_PRV{
+            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "PRV"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_SSP{
+            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "SSP"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_SWK{
+            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "SWK"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_TNA{
+            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "TNA"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+        }
+        }
+        if type != "2"{
+        for mainarr in self.t_NSD{
+            print("Searching....AWS",mainarr)
+                if textinput.contains(mainarr) {
+                    find = "NSD"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                   }
+            }
+            
+        }
+       
         if (type == "1" || type == "2"){
             let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา", message: find, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
-                let url = URL(string:"http://172.25.176.251:8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type)
+                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&rssi="+rssiuse+"&dir="+self.dir)
                 print(url as Any)
                 URLSession.shared.dataTask(with: url!) {
                     (data, response, error) in
                     do{if error == nil{
-                       DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-                           print("Done")
-                       })
+                      
                         self.arrdatarespon = try JSONDecoder().decode([responjsonstruct].self, from: data!)
                         for mainarr in self.arrdatarespon{
-                            print(mainarr.room)
+                            print(mainarr.result)
                         }
                         print("number of list",self.arrdatarespon.count)
                         }
+                        self.direction()
                     }catch{
                         print("Error in get json data room")
                     }
@@ -563,5 +715,71 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         }
     }
     
-    
+    func direction()  {
+        
+        for mainarr in self.arrdatarespon{
+            respond = mainarr.result
+        }
+         print("on Diraction to "+respond)
+        scene = SCNScene(named: "art.scnassets/"+respond+".scn")!
+        sceneView.scene = scene!
+        let text = "เดินตามลูกศรเพื่อไปยังห้อง "+respond+" ได้เลย"
+        speech(text)
+    }
+     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+            print("startdir")
+           if newHeading.headingAccuracy < 0 {
+               return
+           }
+        if (dir != "null") {
+                 lm.stopUpdatingHeading()
+        }
+
+           // Get the heading(direction)
+           let heading: CLLocationDirection = ((newHeading.trueHeading > 0) ?
+               newHeading.trueHeading : newHeading.magneticHeading);
+           UIView.animate(withDuration: 0.5) {
+              
+           }
+          
+          
+            
+          var strDirection = String()
+           if(heading > 23 && heading <= 67){
+               strDirection = "2";
+           
+           } else if(heading > 68 && heading <= 112){
+               strDirection = "3";
+           
+           } else if(heading > 113 && heading <= 167){
+               strDirection = "4";
+       
+           } else if(heading > 168 && heading <= 202){
+               strDirection = "5";
+       
+           } else if(heading > 203 && heading <= 247){
+               strDirection = "6";
+
+           } else if(heading > 248 && heading <= 293){
+               strDirection = "7";
+       
+           } else if(heading > 294 && heading <= 337){
+               strDirection = "8";
+      
+           } else if(heading >= 338 || heading <= 22){
+               strDirection = "1"
+               
+           }
+        
+        if (dir != strDirection){
+            dir = strDirection
+            print(dir)
+        }
+           
+           
+       }
+
+
+   
 }
+

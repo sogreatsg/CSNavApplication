@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "51162F1B239032B000541BBC"
-               BuildableName = "demo.app"
+               BuildableName = "CSNav.app"
                BlueprintName = "demo"
                ReferencedContainer = "container:demo.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "51162F1B239032B000541BBC"
-            BuildableName = "demo.app"
+            BuildableName = "CSNav.app"
             BlueprintName = "demo"
             ReferencedContainer = "container:demo.xcodeproj">
          </BuildableReference>
@@ -69,7 +69,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "51162F1B239032B000541BBC"
-            BuildableName = "demo.app"
+            BuildableName = "CSNav.app"
             BlueprintName = "demo"
             ReferencedContainer = "container:demo.xcodeproj">
          </BuildableReference>
