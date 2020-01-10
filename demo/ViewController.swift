@@ -43,7 +43,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var rssi = 0
     var datedayuse = "nil"
     var datetimeuse = "nil"
-    var scene = SCNScene(named: "art.scnassets/model.scn")
+//    var scene = SCNScene(named: "art.scnassets/26198.scn")
+    var scene = SCNScene()
     
     var dir = "null"
     
@@ -62,13 +63,17 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var arrdataroom=[roomjsonstruct]()
     
     struct responjsonstruct:Decodable{
-           let result:String
+        let x:Double
+        let y:Double
+        let z:Double
              
        }
     var arrdatarespon=[responjsonstruct]()
     var find:String = "non"
     var type:String = "0"
-    var respond = "nil"
+    var respondx = "nil"
+    var respondy = "nil"
+    var respondz = "nil"
     
     let t_AWS = [""]
     let t_LPP = ["หรือพล","ลืพล","ลืมพล","ลืมล","ลืมโอน"]
@@ -106,9 +111,40 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         sceneView.showsStatistics = false
         
         // Create a new scene
-        
+//
+//        var position = SCNVector3(0, -0.5, -1)
+//
+//                   // 2
+//        var mars = createArrow(at: position)
+//        scene.rootNode.addChildNode(mars)
+//
+//                position = SCNVector3(0, -0.5, -2)
+//
+//                          // 2
+//                mars = createArrow(at: position)
+//               scene.rootNode.addChildNode(mars)
+//
+//                position = SCNVector3(0, -0.5, -3)
+//
+//                          // 2
+//                mars = createArrow(at: position)
+//               scene.rootNode.addChildNode(mars)
+//
+//                position = SCNVector3(0, -0.5, -4)
+//
+//                          // 2
+//                mars = createArrow(at: position)
+//               scene.rootNode.addChildNode(mars)
+//
+//                position = SCNVector3(0, -0.5, -5)
+//
+//                          // 2
+//                mars = createArrow(at: position)
+//               scene.rootNode.addChildNode(mars)
+//
+//
       
-        sceneView.scene = scene!
+        sceneView.scene = scene
         lm = CLLocationManager()
         lm.delegate = self
         lm.distanceFilter = 1000
@@ -136,8 +172,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
        
 
         
-//        let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
-        let uuid = UUID(uuidString: "10F86430-1346-11E4-9191-0800200C9A66")
+        let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
+//        let uuid = UUID(uuidString: "10F86430-1346-11E4-9191-0800200C9A66")
         self.locationManager.requestWhenInUseAuthorization()
         
         // Create a new constraint and add it to the dictionary.
@@ -162,6 +198,18 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
       requestAuthorization()
       
 
+    }
+    func createArrow(at position: SCNVector3) -> SCNNode {
+        let sphere = SCNSphere(radius: 0.2)
+         
+        // 2
+        let node = SCNNode(geometry: sphere)
+         
+        // 3
+        node.position = position
+         
+        // 4
+        return node
     }
     @IBAction func micpress(_ sender: Any) {
         if (checkstate == 0) {
@@ -692,13 +740,15 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                       
                         self.arrdatarespon = try JSONDecoder().decode([responjsonstruct].self, from: data!)
                         for mainarr in self.arrdatarespon{
-                            print(mainarr.result)
+                            print(mainarr.x,":",mainarr.y,":",mainarr.z)
                         }
                         print("number of list",self.arrdatarespon.count)
                         }
+                     
                         self.direction()
+                       
                     }catch{
-                        print("Error in get json data room")
+                        print("Error in get json data respon")
                     }
                 }.resume()
             }))
@@ -716,15 +766,19 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
     
     func direction()  {
-        
+       
         for mainarr in self.arrdatarespon{
-            respond = mainarr.result
+            let position = SCNVector3(mainarr.x, mainarr.y , mainarr.z)
+            let mars = createArrow(at: position)
+            scene.rootNode.addChildNode(mars)
+            sceneView.scene = scene
+
         }
-         print("on Diraction to "+respond)
-        scene = SCNScene(named: "art.scnassets/"+respond+".scn")!
-        sceneView.scene = scene!
-        let text = "เดินตามลูกศรเพื่อไปยังห้อง "+respond+" ได้เลย"
-        speech(text)
+//        scene = SCNScene(named: "art.scnassets/model.scn")!
+     
+//        let text = "เดินตามลูกศรเพื่อไปยังจุดหมายได้เลย"
+//               speech(text)
+//
     }
      func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
             print("startdir")
