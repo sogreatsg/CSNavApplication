@@ -43,7 +43,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var rssi = 0
     var datedayuse = "nil"
     var datetimeuse = "nil"
-//    var scene = SCNScene(named: "art.scnassets/26198.scn")
+//    var scene = SCNScene(named: "art.scnassets/26191.scn")
     var scene = SCNScene()
     
     var dir = "null"
@@ -82,7 +82,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด"]
     let t_BLT = [""]
     let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส","กิ๊บดำผัด","กฤษดาผัก","ปริศฎาพัด"]
-    let t_KAB = ["คันธารัตย์"]
+    let t_KAB = ["คันธารัตย์","แก๊ส"]
     let t_KSB = ["กอบเกียรติ์"]
     let t_NKS = ["ได้ก่อน","นึกก่อน","นิก่อน"]
     let t_NSN = [""]
@@ -212,7 +212,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         return node
     }
     @IBAction func micpress(_ sender: Any) {
-        if (checkstate == 0) {
+        if (checkstate == 1) {
             let text = "ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง"
             speech(text)
         }else{
