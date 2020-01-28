@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
    
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    var ipserver = "172.20.10.3"
+    var ipserver = "192.168.1.129"
     
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
@@ -46,7 +46,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
 //    var scene = SCNScene(named: "art.scnassets/26191.scn")
     var scene = SCNScene()
     
-    var dir = "null"
+    var dir = "nil"
     
     
     struct teacherjsonstruct:Decodable{
@@ -732,7 +732,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา", message: find, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
-                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&rssi="+rssiuse+"&dir="+self.dir)
+                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&rssi=2"+"&dir="+self.dir)
+//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&rssi="+rssiuse+"&dir=0")
                 print(url as Any)
                 URLSession.shared.dataTask(with: url!) {
                     (data, response, error) in
@@ -795,40 +796,15 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
            UIView.animate(withDuration: 0.5) {
               
            }
-          
-          
-            
-          var strDirection = String()
-           if(heading > 23 && heading <= 67){
-               strDirection = "2";
-           
-           } else if(heading > 68 && heading <= 112){
-               strDirection = "3";
-           
-           } else if(heading > 113 && heading <= 167){
-               strDirection = "4";
-       
-           } else if(heading > 168 && heading <= 202){
-               strDirection = "5";
-       
-           } else if(heading > 203 && heading <= 247){
-               strDirection = "6";
 
-           } else if(heading > 248 && heading <= 293){
-               strDirection = "7";
-       
-           } else if(heading > 294 && heading <= 337){
-               strDirection = "8";
-      
-           } else if(heading >= 338 || heading <= 22){
-               strDirection = "1"
-               
-           }
+            
+        var tempdir = Double(heading)
+        tempdir.round()
+        dir = String(tempdir)
+//        dir = String(heading)
+        print(tempdir)
+        print(dir)
         
-        if (dir != strDirection){
-            dir = strDirection
-            print(dir)
-        }
            
            
        }
