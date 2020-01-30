@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
    
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    var ipserver = "192.168.1.129"
+    var ipserver = "172.20.10.3"
     
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
@@ -45,7 +45,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var datetimeuse = "nil"
 //    var scene = SCNScene(named: "art.scnassets/26191.scn")
     var scene = SCNScene()
-    
+    var zoneuse = "nil"
+    var rssiuse = "nil"
     var dir = "nil"
     
     
@@ -212,7 +213,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         return node
     }
     @IBAction func micpress(_ sender: Any) {
-        if (checkstate == 1) {
+        if (checkstate == 0) {
             let text = "ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง"
             speech(text)
         }else{
@@ -440,6 +441,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
       func locationManager(_ manager: CLLocationManager, didRange beacons: [CLBeacon], satisfying beaconConstraint: CLBeaconIdentityConstraint) {
         var temp = 0
+        var closestBeacon:CLBeacon
+        var rs:NSNumber
             /*
              Beacons are categorized by proximity. A beacon can satisfy
              multiple constraints and can be displayed multiple times.
@@ -447,16 +450,19 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
             let knownBeacons = beacons.filter{ $0.proximity != CLProximity.unknown }
             if (knownBeacons.count > 0) {
-                let closestBeacon = knownBeacons[0] as CLBeacon
-                let rs = closestBeacon.minor
+                closestBeacon = knownBeacons[0] as CLBeacon
+                rs = closestBeacon.minor
                 temp = Int(truncating: rs)
-                
+                let ttzone = closestBeacon.rssi * -1
+                zoneuse = String(ttzone)
                
             }
         
         if (temp != zone){
+            
             zone = temp
             rssi = zone
+            
         }
 
            
@@ -502,7 +508,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     
     func postData(textinput:String) {
         
-        let rssiuse = String(rssi)
+        rssiuse = String(rssi)
+        
        
        
         type = "0"
@@ -517,7 +524,15 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                let dateString2 = formatter2.string(from: now)
                datetimeuse = dateString2
                print("Time Now : ",datedayuse,datetimeuse)
-        
+         if type == "0"{
+            if textinput.contains("ห้องพัก") {
+                                       find = "1111"
+                                       type = "1"
+                                       print("Find = "+find)
+                                       
+            }
+        }
+         if type == "0"{
         for mainarr in self.arrdataroom{
                          print("Searching....room",mainarr)
                          if textinput.contains(mainarr.room) {
@@ -527,8 +542,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                             break
                 }
         }
-    
-              
+        }
+         if type == "0"{
         for mainarr in self.arrdatateacher{
             print("Searching....Teacher",mainarr)
             if textinput.contains(mainarr.name) {
@@ -539,7 +554,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 
             }
         }
-        if type != "2"{
+        }
+        if type == "0"{
             for mainarr in self.t_AWS{
                
                     if textinput.contains(mainarr) {
@@ -550,7 +566,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                        }
             }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_LPP{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -561,7 +577,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_ENS{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -572,7 +588,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_ADP{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -583,7 +599,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_CHR{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -594,7 +610,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_BLT{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -605,7 +621,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_GDP{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -616,7 +632,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_KAB{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -627,7 +643,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_KSB{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -638,7 +654,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_NKS{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -649,7 +665,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_NSN{
 //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -660,7 +676,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_PLS{
             print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -671,7 +687,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_PRV{
             print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -682,7 +698,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_SSP{
             print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -693,7 +709,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_SWK{
             print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -704,7 +720,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_TNA{
             print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -715,7 +731,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                    }
         }
         }
-        if type != "2"{
+        if type == "0"{
         for mainarr in self.t_NSD{
             print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
@@ -728,12 +744,14 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             
         }
        
-        if (type == "1" || type == "2"){
+        if (type != "0"){
             let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา", message: find, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
-                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&rssi=2"+"&dir="+self.dir)
-//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&rssi="+rssiuse+"&dir=0")
+//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+self.zoneuse+"&dir="+self.dir)
+                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=3"+"&rssi="+self.zoneuse+"&dir="+self.dir)
+
+
                 print(url as Any)
                 URLSession.shared.dataTask(with: url!) {
                     (data, response, error) in
