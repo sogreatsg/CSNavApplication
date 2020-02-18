@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
    
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    var ipserver = "172.20.10.3"
+    var ipserver = "172.22.0.244"
     
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
@@ -48,7 +48,9 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var zoneuse = "nil"
     var rssiuse = "nil"
     var dir = "nil"
-    
+    var rssisum = 0
+    var numrssi = 0
+    var rssiavg = 0
     
     struct teacherjsonstruct:Decodable{
         let aka:String
@@ -200,18 +202,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
       
 
     }
-    func createArrow(at position: SCNVector3) -> SCNNode {
-        let sphere = SCNSphere(radius: 0.2)
-         
-        // 2
-        let node = SCNNode(geometry: sphere)
-         
-        // 3
-        node.position = position
-         
-        // 4
-        return node
-    }
+   
     @IBAction func micpress(_ sender: Any) {
         if (checkstate == 0) {
             let text = "ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง"
@@ -443,6 +434,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         var temp = 0
         var closestBeacon:CLBeacon
         var rs:NSNumber
+        
             /*
              Beacons are categorized by proximity. A beacon can satisfy
              multiple constraints and can be displayed multiple times.
@@ -451,12 +443,25 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             let knownBeacons = beacons.filter{ $0.proximity != CLProximity.unknown }
             if (knownBeacons.count > 0) {
                 closestBeacon = knownBeacons[0] as CLBeacon
+//                print("proxraw" , closestBeacon.proximity.rawValue)
                 rs = closestBeacon.minor
                 temp = Int(truncating: rs)
+//                print("proxhash" , closestBeacon.proximity.hashValue)
                 let ttzone = closestBeacon.rssi * -1
+//                 print("rssi" , ttzone)
                 zoneuse = String(ttzone)
+                if (ttzone != 0 ){
+                    rssisum += ttzone
+                    numrssi += 1
+                }
                
             }
+        
+             rssiavg = rssisum / numrssi
+//             numrssi = 0
+//            print("rssiavg" , rssiavg)
+           
+            
         
         if (temp != zone){
             
@@ -745,11 +750,11 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         }
        
         if (type != "0"){
-            let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา", message: find, preferredStyle: .alert)
+            let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา" , message: find, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
-//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+self.zoneuse+"&dir="+self.dir)
-                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=3"+"&rssi="+self.zoneuse+"&dir="+self.dir)
+                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
+//               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=1"+"&rssi=75"+"&dir="+self.dir)
 
 
                 print(url as Any)
@@ -783,7 +788,23 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
+     func createArrow(at position: SCNVector3) -> SCNNode {
+
+            // 2
+           let node = SCNNode()
+           let scene = SCNScene(named: "art.scnassets/diamondd2.scn")
+            let nodeArray = scene!.rootNode.childNodes
+
+           for childNode in nodeArray {
+             node.addChildNode(childNode as SCNNode)
+           }
+
+            // 3
+            node.position = position
+            node.eulerAngles = SCNVector3(0, 0 , 0)
+            // 4
+            return node
+        }
     func direction()  {
        
         for mainarr in self.arrdatarespon{
@@ -820,7 +841,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         tempdir.round()
         dir = String(tempdir)
 //        dir = String(heading)
-        print(tempdir)
+     
         print(dir)
         
            
