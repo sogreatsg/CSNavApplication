@@ -23,9 +23,8 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="skipClick:" destination="dZs-qi-Qbo" eventType="touchUpInside" id="9Ap-0c-9BY"/>
-                                    <action selector="test:" destination="dZs-qi-Qbo" eventType="touchUpInside" id="EoK-KS-LN8"/>
-                                    <segue destination="BV1-FR-VrT" kind="presentation" modalPresentationStyle="fullScreen" id="emK-LB-18P"/>
+                                    <action selector="indexButton:" destination="dZs-qi-Qbo" eventType="touchUpInside" id="jgl-FV-7hj"/>
+                                    <segue destination="BV1-FR-VrT" kind="presentation" identifier="mySegueID" modalPresentationStyle="fullScreen" id="emK-LB-18P"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="intro" translatesAutoresizingMaskIntoConstraints="NO" id="rv6-24-gcs">
@@ -38,6 +37,7 @@
                     </view>
                     <connections>
                         <outlet property="button" destination="WYa-lf-sqS" id="vjr-pg-0PH"/>
+                        <outlet property="intro" destination="rv6-24-gcs" id="dpL-Hc-ecb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BCh-Kb-eTc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -47,7 +47,7 @@
         <!--View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="CSNav" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" id="BV1-FR-VrT" customClass="ViewController" customModule="CSNav" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U0K-SW-4ec">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
