@@ -15,13 +15,11 @@ import Speech
 import AVFoundation
 
 class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDelegate,SFSpeechRecognizerDelegate{
-
+    
     @IBOutlet var sceneView: ARSCNView!
-  
-   
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    var ipserver = "172.22.1.191"
+    var ipserver = "172.20.10.3"
     
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
@@ -43,7 +41,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var rssi = 0
     var datedayuse = "nil"
     var datetimeuse = "nil"
-//    var scene = SCNScene(named: "art.scnassets/26191.scn")
+    //    var scene = SCNScene(named: "art.scnassets/26191.scn")
     var scene = SCNScene()
     var zoneuse = "nil"
     var rssiuse = "nil"
@@ -55,22 +53,23 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     struct teacherjsonstruct:Decodable{
         let aka:String
         let name:String
-    
+        
     }
     var arrdatateacher=[teacherjsonstruct]()
     
     struct roomjsonstruct:Decodable{
         let room:String
-          
+        
     }
     var arrdataroom=[roomjsonstruct]()
     
     struct responjsonstruct:Decodable{
+        let r:String
         let x:Double
         let y:Double
         let z:Double
-             
-       }
+        
+    }
     var arrdatarespon=[responjsonstruct]()
     var find:String = "non"
     var type:String = "0"
@@ -82,15 +81,15 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     let t_LPP = ["หรือพล","ลืพล","ลืมพล","ลืมล","ลืมโอน"]
     let t_ENS = ["เอิน", "เอิร์น"]
     let t_ADP = [""]
-    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด"]
-    let t_BLT = ["เบญญาพร"]
+    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด","เจียบวุด","เชฟวุต","เฉียบนุช","เชียร์บูธ","เชียงพุทธ","เชียร์พุทธ","เฉียบวัด","เชียงวุต","เฉียบบูธ","เฉี๊ยบพุทธ","เชื่อพูด","เชียร์กู๊ด","ชาวพุทธ","เฉียบพุทธ","เฉียบ"]
+    let t_BLT = ["เบญญาพร","เบนจะพร"]
     let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส","กิ๊บดำผัด","กฤษดาผัก","ปริศฎาพัด"]
-    let t_KAB = ["คันธารัตย์","แก๊ส"]
+    let t_KAB = ["คันธารัตย์","แก๊ส","แก๊ป","ทิพย์"]
     let t_KSB = ["กอบเกียรติ์"]
     let t_NKS = ["ได้ก่อน","นึกก่อน","นิก่อน"]
     let t_NSN = [""]
-    let t_PLS = ["ปัดชญาภรณ์","ปัดเชียร์พร","ปัดเชียร์ยาก่อน","พัทยาพร","ปรัชยาพร","ปัดเชียร์ยาภรณ์","รัชญาพร"]
-    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด"]
+    let t_PLS = ["ปัดชญาภรณ์","ปัดเชียร์พร","ปัดเชียร์ยาก่อน","พัทยาพร","ปรัชยาพร","ปัดเชียร์ยาภรณ์","รัชญาพร","ปู"]
+    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด","นรวัฒน์","วรวัฒน์"]
     let t_SSP = ["สถิต"]
     let t_SWK = ["สุวัฒชัย","สุวรรณชัย","ถ้วย","ช่วย"]
     let t_TNA = ["ธนภัทร","ธนพัฒน์"]
@@ -100,11 +99,11 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     override func viewDidLoad() {
         
         super.viewDidLoad()
-    
+        
         readDataTeacher()
         readDataRoom()
         recordButton.tintColor = .white
-       
+        
         locationManager.delegate = self
         
         // Set the view's delegate
@@ -113,40 +112,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = false
         
-        // Create a new scene
-//
-//        var position = SCNVector3(0, -0.5, -1)
-//
-//                   // 2
-//        var mars = createArrow(at: position)
-//        scene.rootNode.addChildNode(mars)
-//
-//                position = SCNVector3(0, -0.5, -2)
-//
-//                          // 2
-//                mars = createArrow(at: position)
-//               scene.rootNode.addChildNode(mars)
-//
-//                position = SCNVector3(0, -0.5, -3)
-//
-//                          // 2
-//                mars = createArrow(at: position)
-//               scene.rootNode.addChildNode(mars)
-//
-//                position = SCNVector3(0, -0.5, -4)
-//
-//                          // 2
-//                mars = createArrow(at: position)
-//               scene.rootNode.addChildNode(mars)
-//
-//                position = SCNVector3(0, -0.5, -5)
-//
-//                          // 2
-//                mars = createArrow(at: position)
-//               scene.rootNode.addChildNode(mars)
-//
-//
-      
+        
         sceneView.scene = scene
         lm = CLLocationManager()
         lm.delegate = self
@@ -156,26 +122,20 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             lm.headingFilter = 5
             lm.startUpdatingHeading()
         }
-       
-
-              // Start location services to get the true heading.
-       
-        locationManager.startUpdatingLocation()
-       
         
-
+        
+        // Start location services to get the true heading.
+        
+        locationManager.startUpdatingLocation()
 
         speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
 
-
-        
         print("viewDidLoad")
         
-       
-
+      
         
         let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
-//        let uuid = UUID(uuidString: "10F86430-1346-11E4-9191-0800200C9A66")
+        //        let uuid = UUID(uuidString: "10F86430-1346-11E4-9191-0800200C9A66")
         self.locationManager.requestWhenInUseAuthorization()
         
         // Create a new constraint and add it to the dictionary.
@@ -183,76 +143,81 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         self.beaconConstraints[constraint] = []
         
         /*
-        By monitoring for the beacon before ranging, the app is more
-        energy efficient if the beacon is not immediately observable.
-        */
+         By monitoring for the beacon before ranging, the app is more
+         energy efficient if the beacon is not immediately observable.
+         */
         let beaconRegion = CLBeaconRegion(beaconIdentityConstraint: constraint, identifier: uuid!.uuidString)
         self.locationManager.startMonitoring(for: beaconRegion)
         print("iBeacon starting")
         
- 
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-
-      speechRecognizer.delegate = self
-      requestAuthorization()
-      
-
+        
+        speechRecognizer.delegate = self
+        requestAuthorization()
+        
+        
     }
-   
+    
     @IBAction func micpress(_ sender: Any) {
         
         if (checkstate == 0) {
-         
             speech("ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง")
         }else{
+           
             if audioEngine.isRunning {
-
-                     audioEngine.stop()
-                     recognitionRequest?.endAudio()
-                     recordButton.isEnabled = false
-                     print("StopRecording")
-                     recordButton.tintColor = .white
-
-
-                   } else {
-                     startRecording()
-                     print("Recording")
-                     recordButton.tintColor = .systemBlue
-                   }
+               
+                audioEngine.stop()
+                recognitionRequest?.endAudio()
+                
+                recordButton.isEnabled = false
+                print("StopRecording")
+                recordButton.tintColor = .white
+//
+                
+            } else {
+                sceneView.scene.rootNode.enumerateChildNodes { (node, stop) in
+                    node.removeFromParentNode()
+                }
+//
+                startRecording()
+                print("Recording")
+                recordButton.tintColor = .systemBlue
+            }
         }
         
-          
+        
     }
     
     
-   
+    
     
     func requestAuthorization(){
-      SFSpeechRecognizer.requestAuthorization { authStatus in
-          
-          OperationQueue.main.addOperation {
-              switch authStatus {
-              case .authorized:
-                  self.recordButton.isEnabled = true
-                  
-              case .denied:
-                  self.recordButton.isEnabled = false
-                  self.recordButton.setTitle("User denied access to speech recognition", for: .disabled)
-                  
-              case .restricted:
-                  self.recordButton.isEnabled = false
-                  self.recordButton.setTitle("Speech recognition restricted on this device", for: .disabled)
-                  
-              case .notDetermined:
-                  self.recordButton.isEnabled = false
-                  self.recordButton.setTitle("Speech recognition not yet authorized", for: .disabled)
-              default :
-                print("no")
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            
+            OperationQueue.main.addOperation {
+                switch authStatus {
+                case .authorized:
+                    self.recordButton.isEnabled = true
+                    
+                case .denied:
+                    self.recordButton.isEnabled = false
+                    self.recordButton.setTitle("User denied access to speech recognition", for: .disabled)
+                    
+                case .restricted:
+                    self.recordButton.isEnabled = false
+                    self.recordButton.setTitle("Speech recognition restricted on this device", for: .disabled)
+                    
+                case .notDetermined:
+                    self.recordButton.isEnabled = false
+                    self.recordButton.setTitle("Speech recognition not yet authorized", for: .disabled)
+                default :
+                    print("no")
+                }
             }
-          }
-      }
+        }
     }
     
     func startRecording()  {
@@ -284,9 +249,9 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
             
             var isFinal = false
-
+            
             if result != nil {
-
+                
                 self.textinput = (result?.bestTranscription.formattedString)!
                 isFinal = (result?.isFinal)!
                 self.recordButton.isEnabled = true
@@ -296,28 +261,24 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             
             if error != nil || isFinal {
                 let textinputtemp:String?
-            
+                
                 textinputtemp = result?.bestTranscription.formattedString
                 print(textinputtemp as Any)
-                
                 self.postData(textinput: textinputtemp ?? "nil")
-           
                 self.audioEngine.stop()
                 inputNode.removeTap(onBus: 0)
                 self.recognitionRequest = nil
                 self.recognitionTask = nil
                 self.recordButton.isEnabled = true
-               
+                
+                
             }
         })
-        
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, when) in
             self.recognitionRequest?.append(buffer)
         }
-        
         audioEngine.prepare()
-        
         do {
             try audioEngine.start()
         } catch {
@@ -341,26 +302,26 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
     
     func speech(_ text: String) {
-    
+        
         print("Start Speech : "+text)
         let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string:text)
         speechUtterance.rate = AVSpeechUtteranceMaximumSpeechRate / 2
         speechUtterance.voice = AVSpeechSynthesisVoice(language: langSpeech)
         speechSynthesizer.speak(speechUtterance)
-        
-}
+       
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
-
+        
         // Run the view's session
         sceneView.session.run(configuration)
         print("viewWillAppear")
         
-       
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -371,23 +332,14 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         for region in locationManager.monitoredRegions {
             locationManager.stopMonitoring(for: region)
         }
-              
-              // Stop ranging when the view disappears.
+        
+        // Stop ranging when the view disappears.
         for constraint in beaconConstraints.keys {
             locationManager.stopRangingBeacons(satisfying: constraint)
         }
     }
-
-    // MARK: - ARSCNViewDelegate
     
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
+
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
@@ -405,7 +357,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
         let beaconRegion = region as? CLBeaconRegion
-       
+        
         print("check state")
         if state == .inside {
             checkstate = 1
@@ -417,45 +369,45 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             // Stop ranging when not inside a region.
             checkstate = 0
             
-           
+            
             print("iBeacon outside")
             manager.stopRangingBeacons(satisfying: beaconRegion!.beaconIdentityConstraint)
         }
     }
-      func locationManager(_ manager: CLLocationManager, didRange beacons: [CLBeacon], satisfying beaconConstraint: CLBeaconIdentityConstraint) {
+    func locationManager(_ manager: CLLocationManager, didRange beacons: [CLBeacon], satisfying beaconConstraint: CLBeaconIdentityConstraint) {
         var temp = 0
         var closestBeacon:CLBeacon
         var rs:NSNumber
         
-            /*
-             Beacons are categorized by proximity. A beacon can satisfy
-             multiple constraints and can be displayed multiple times.
-             */
+        /*
+         Beacons are categorized by proximity. A beacon can satisfy
+         multiple constraints and can be displayed multiple times.
+         */
         
-            let knownBeacons = beacons.filter{ $0.proximity != CLProximity.unknown }
-            if (knownBeacons.count > 0) {
-                closestBeacon = knownBeacons[0] as CLBeacon
-//                print("proxraw" , closestBeacon.proximity.rawValue)
-                rs = closestBeacon.minor
-                temp = Int(truncating: rs)
-//                print("proxhash" , closestBeacon.proximity.hashValue)
-                let ttzone = closestBeacon.rssi * -1
-//                 print("rssi" , ttzone)
-                zoneuse = String(ttzone)
-                if (ttzone != 0 ){
-                    rssisum += ttzone
-                    numrssi += 1
-                   
-                }
-               
+        let knownBeacons = beacons.filter{ $0.proximity != CLProximity.unknown }
+        if (knownBeacons.count > 0) {
+            closestBeacon = knownBeacons[0] as CLBeacon
+            //                print("proxraw" , closestBeacon.proximity.rawValue)
+            rs = closestBeacon.minor
+            temp = Int(truncating: rs)
+            //                print("proxhash" , closestBeacon.proximity.hashValue)
+            let ttzone = closestBeacon.rssi * -1
+            //                 print("rssi" , ttzone)
+            zoneuse = String(ttzone)
+            if (ttzone != 0 ){
+                rssisum += ttzone
+                numrssi += 1
+                
             }
             
-        if(numrssi == 5){
-             rssiavg = rssisum / numrssi
-
-           
         }
+        
+        if(numrssi == 5){
+            rssiavg = rssisum / numrssi
             
+            
+        }
+        
         
         if (temp != zone){
             
@@ -463,28 +415,28 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             rssi = zone
             
         }
-
-           
-        }
+        
+        
+    }
     
     func readDataTeacher()  {
         
-              print("Starting GET Data Teacher")
-              let url = URL(string:"http://"+ipserver+":8084/WebApplication/jsondata.json")
-              URLSession.shared.dataTask(with: url!) {
-                  (data, response, error) in
-                  do{if error == nil{
-                      self.arrdatateacher = try JSONDecoder().decode([teacherjsonstruct].self, from: data!)
-                      for mainarr in self.arrdatateacher{
-                        print(mainarr.aka,":",mainarr.name)
-                          
-                      }
-                      print("number of list",self.arrdatateacher.count)
-                      }
-                  }catch{
-                      print("Error in get json data teacher")
-                  }
-              }.resume()
+        print("Starting GET Data Teacher")
+        let url = URL(string:"http://"+ipserver+":8084/WebApplication/jsondata.json")
+        URLSession.shared.dataTask(with: url!) {
+            (data, response, error) in
+            do{if error == nil{
+                self.arrdatateacher = try JSONDecoder().decode([teacherjsonstruct].self, from: data!)
+                for mainarr in self.arrdatateacher{
+                    print(mainarr.aka,":",mainarr.name)
+                    
+                }
+                print("number of list",self.arrdatateacher.count)
+                }
+            }catch{
+                print("Error in get json data teacher")
+            }
+        }.resume()
     }
     func readDataRoom()  {
         print("Starting GET Data Room")
@@ -493,7 +445,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         URLSession.shared.dataTask(with: url!) {
             (data, response, error) in
             do{if error == nil{
-               
+                
                 self.arrdataroom = try JSONDecoder().decode([roomjsonstruct].self, from: data!)
                 for mainarr in self.arrdataroom{
                     print(mainarr.room)
@@ -509,269 +461,272 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     func postData(textinput:String) {
         
         rssiuse = String(rssi)
-         
-       
-       
+        var showtext:String
+        
         type = "0"
         let formatter1 = DateFormatter()
-               let formatter2 = DateFormatter()
-                      //2016-12-08 03:37:22 +0000
-               formatter1.dateFormat = "EEEE"
-               formatter2.dateFormat = "HH:mm"
-               let now = Date()
-               let dateString = formatter1.string(from:now)
-               datedayuse = dateString
-               let dateString2 = formatter2.string(from: now)
-               datetimeuse = dateString2
-               print("Time Now : ",datedayuse,datetimeuse)
-         if type == "0"{
+        let formatter2 = DateFormatter()
+        //2016-12-08 03:37:22 433+0000
+        formatter1.dateFormat = "EEEE"
+        formatter2.dateFormat = "HH:mm"
+        let now = Date()
+        let dateString = formatter1.string(from:now)
+        datedayuse = dateString
+        let dateString2 = formatter2.string(from: now)
+        datetimeuse = dateString2
+        print("Time Now : ",datedayuse,datetimeuse)
+        if type == "0"{
             if textinput.contains("ห้องพัก") {
-                                       find = "1111"
-                                       type = "1"
-                                       print("Find = "+find)
-                                       
-            }
-        }
-         if type == "0"{
-        for mainarr in self.arrdataroom{
-                         print("Searching....room",mainarr)
-                         if textinput.contains(mainarr.room) {
-                            find = mainarr.room
-                            type = "1"
-                            print("Find = "+find)
-                            break
-                }
-        }
-        }
-         if type == "0"{
-        for mainarr in self.arrdatateacher{
-            print("Searching....Teacher",mainarr)
-            if textinput.contains(mainarr.name) {
-                    find = mainarr.aka
-                    type = "2"
-                    print("Find = "+find)
-                    break
+                find = "1111"
+                type = "1"
+                print("Find = "+find)
                 
             }
         }
-        }
         if type == "0"{
-            for mainarr in self.t_AWS{
-               
-                    if textinput.contains(mainarr) {
-                        find = "AWS"
-                        type = "2"
-                        print("Find = "+find)
-                        break
-                       }
+            for mainarr in self.arrdataroom{
+                print("Searching....room",mainarr)
+                if textinput.contains(mainarr.room) {
+                    find = mainarr.room
+                    type = "1"
+                    print("Find = "+find)
+                 
+                    break
+                }
             }
         }
         if type == "0"{
-        for mainarr in self.t_LPP{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.arrdatateacher{
+                print("Searching....Teacher",mainarr)
+                if textinput.contains(mainarr.name) {
+                    find = mainarr.aka
+                    type = "2"
+                    print("Find = "+find)
+                    showtext = mainarr.name
+                    break
+                    
+                }
+            }
+        }
+        if type == "0"{
+            for mainarr in self.t_AWS{
+                
+                if textinput.contains(mainarr) {
+                    find = "AWS"
+                    type = "2"
+                    print("Find = "+find)
+                    break
+                }
+            }
+        }
+        if type == "0"{
+            for mainarr in self.t_LPP{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "LPP"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_ENS{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_ENS{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "ENS"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_ADP{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_ADP{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "ADP"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_CHR{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_CHR{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "CHR"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_BLT{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_BLT{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "BLT"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_GDP{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_GDP{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "GDP"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_KAB{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_KAB{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "KAB"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_KSB{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_KSB{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "KSB"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_NKS{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_NKS{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "NKS"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_NSN{
-//            print("Searching....AWS",mainarr)
+            for mainarr in self.t_NSN{
+                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "NSN"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_PLS{
-            print("Searching....AWS",mainarr)
+            for mainarr in self.t_PLS{
+                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "PLS"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_PRV{
-            print("Searching....AWS",mainarr)
+            for mainarr in self.t_PRV{
+                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "PRV"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_SSP{
-            print("Searching....AWS",mainarr)
+            for mainarr in self.t_SSP{
+                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "SSP"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_SWK{
-            print("Searching....AWS",mainarr)
+            for mainarr in self.t_SWK{
+                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "SWK"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_TNA{
-            print("Searching....AWS",mainarr)
+            for mainarr in self.t_TNA{
+                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "TNA"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
-        }
+                }
+            }
         }
         if type == "0"{
-        for mainarr in self.t_NSD{
-            print("Searching....AWS",mainarr)
+            for mainarr in self.t_NSD{
+                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "NSD"
                     type = "2"
                     print("Find = "+find)
                     break
-                   }
+                }
             }
             
         }
-        var showtext = find
+        showtext = find
         if(find == "1111"){
             showtext = "ห้องพักอาจารย์"
-          
         }
-      
+        if(textinput == "nil"){
+            showtext = "ไม่ได้รับข้อความที่คุณค้นหา"
+        }
+        
         if (type != "0"){
-
+            
             let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา" , message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
                 let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-//               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=3"+"&rssi=75"+"&dir="+self.dir)
-
-
+//                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=2"+"&rssi=75"+"&dir="+self.dir)
+                
+                
                 print(url as Any)
                 URLSession.shared.dataTask(with: url!) {
                     (data, response, error) in
                     do{if error == nil{
-
+                        
                         self.arrdatarespon = try JSONDecoder().decode([responjsonstruct].self, from: data!)
                         for mainarr in self.arrdatarespon{
-                            print(mainarr.x,":",mainarr.y,":",mainarr.z)
+                            print(mainarr.r,":",mainarr.x,":",mainarr.y,":",mainarr.z)
                         }
                         print("number of list",self.arrdatarespon.count)
                         }
-
+                        
                         self.direction()
-
+                        
                     }catch{
                         print("Error in get json data respon")
                     }
@@ -782,74 +737,85 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }))
             self.present(alert, animated: true, completion: nil)
         }else{
-         
-
-            let alert = UIAlertController(title: "ไม่พบข้อความที่คุณค้นหา กรุณาลองใหม่อีกครั้ง", message: textinput, preferredStyle: .alert)
+            
+            
+            let alert = UIAlertController(title: "ไม่พบข้อความที่คุณค้นหา กรุณาลองใหม่อีกครั้ง", message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "try agian", style: .default, handler: { action in
                 print("try agian")
-             }))
+            }))
             self.present(alert, animated: true, completion: nil)
         }
     }
-     func createArrow(at position: SCNVector3) -> SCNNode {
-
-            // 2
-           let node = SCNNode()
-           let scene = SCNScene(named: "art.scnassets/diamondd2.scn")
-            let nodeArray = scene!.rootNode.childNodes
-
-           for childNode in nodeArray {
-             node.addChildNode(childNode as SCNNode)
-           }
-
-            // 3
-            node.position = position
-            node.eulerAngles = SCNVector3(0, 0 , 0)
-            // 4
-            return node
-        }
-    func direction()  {
+    func createArrow(at position: SCNVector3,at r:String) -> SCNNode {
+        
+        // 2
        
+        let node = SCNNode()
+        let scene:SCNScene
+        if(r=="0"){
+            scene = SCNScene(named: "art.scnassets/gem.scn")!
+        }else{
+            scene = SCNScene(named: "art.scnassets/"+r+".scn")!
+//            scene = SCNScene(named: "art.scnassets/diamond.scn")!
+        }
+        
+        
+        let nodeArray = scene.rootNode.childNodes
+        
+        for childNode in nodeArray {
+            node.addChildNode(childNode as SCNNode)
+        }
+        
+        // 3
+        node.position = position
+        node.eulerAngles = SCNVector3(0, 0 , 0)
+        // 4
+        return node
+    }
+    func direction()  {
+        
         for mainarr in self.arrdatarespon{
+           
             let position = SCNVector3(mainarr.x, mainarr.y , mainarr.z)
-            let mars = createArrow(at: position)
+            
+            let mars = createArrow(at: position,at: mainarr.r)
             scene.rootNode.addChildNode(mars)
             sceneView.scene = scene
-
-        }
-
-            speech("เดินตามลูกศรเพื่อไปยังจุดหมายได้เลย")
-
-    }
-     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-            print("startdir")
-           if newHeading.headingAccuracy < 0 {
-               return
-           }
-        if (dir != "null") {
-                 lm.stopUpdatingHeading()
-        }
-
-           // Get the heading(direction)
-           let heading: CLLocationDirection = ((newHeading.trueHeading > 0) ?
-               newHeading.trueHeading : newHeading.magneticHeading);
-           UIView.animate(withDuration: 0.5) {
-              
-           }
-
             
+        }
+        
+        speech("เดินตามลูกศรเพื่อไปยังจุดหมายได้เลย")
+        
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        print("startdir")
+        if newHeading.headingAccuracy < 0 {
+            return
+        }
+        if (dir != "null") {
+            lm.stopUpdatingHeading()
+        }
+        
+        // Get the heading(direction)
+        let heading: CLLocationDirection = ((newHeading.trueHeading > 0) ?
+            newHeading.trueHeading : newHeading.magneticHeading);
+        UIView.animate(withDuration: 0.5) {
+            
+        }
+        
+        
         var tempdir = Double(heading)
         tempdir.round()
         dir = String(tempdir)
-//        dir = String(heading)
-     
+        //        dir = String(heading)
+        
         print(dir)
         
-           
-           
-       }
-
-
-   
+        
+        
+    }
+    
+    
+    
 }
 
