@@ -39,12 +39,12 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var checkstate = 0
     var zone = 0
     var rssi = 0
+    var zoneuse = "nil"
+    var rssiuse = "nil"
     var datedayuse = "nil"
     var datetimeuse = "nil"
     //    var scene = SCNScene(named: "art.scnassets/26191.scn")
     var scene = SCNScene()
-    var zoneuse = "nil"
-    var rssiuse = "nil"
     var dir = "nil"
     var rssisum = 0
     var numrssi = 0
@@ -73,27 +73,28 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var arrdatarespon=[responjsonstruct]()
     var find:String = "non"
     var type:String = "0"
-    var respondx = "nil"
-    var respondy = "nil"
-    var respondz = "nil"
+    
     
     let t_AWS = [""]
-    let t_LPP = ["หรือพล","ลืพล","ลืมพล","ลืมล","ลืมโอน"]
+    let t_LPP = ["หรือพล","ลืพล","ลืมพล","ลืมล","ลืมโอน","หรือผล"]
     let t_ENS = ["เอิน", "เอิร์น"]
     let t_ADP = [""]
-    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด","เจียบวุด","เชฟวุต","เฉียบนุช","เชียร์บูธ","เชียงพุทธ","เชียร์พุทธ","เฉียบวัด","เชียงวุต","เฉียบบูธ","เฉี๊ยบพุทธ","เชื่อพูด","เชียร์กู๊ด","ชาวพุทธ","เฉียบพุทธ","เฉียบ"]
+    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด","เจียบวุด","เชฟวุต","เฉียบนุช","เชียร์บูธ","เชียงพุทธ","เชียร์พุทธ","เฉียบวัด","เชียงวุต","เฉียบบูธ","เฉี๊ยบพุทธ","เชื่อพูด","เชียร์กู๊ด","ชาวพุทธ","เฉียบพุทธ","เฉียบ","จัดบูธ","เชฟพุทธ","เชี่ยวกู๊ด"]
     let t_BLT = ["เบญญาพร","เบนจะพร"]
     let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส","กิ๊บดำผัด","กฤษดาผัก","ปริศฎาพัด"]
-    let t_KAB = ["คันธารัตย์","แก๊ส","แก๊ป","ทิพย์"]
+    let t_KAB = ["คันธารัตย์","แก๊ส","แก๊ป","ทิพย์","คันธรัตน์"]
     let t_KSB = ["กอบเกียรติ์"]
-    let t_NKS = ["ได้ก่อน","นึกก่อน","นิก่อน"]
+    let t_NKS = ["ได้ก่อน","นึกก่อน","นิก่อน","นิกก่อน"]
     let t_NSN = [""]
-    let t_PLS = ["ปัดชญาภรณ์","ปัดเชียร์พร","ปัดเชียร์ยาก่อน","พัทยาพร","ปรัชยาพร","ปัดเชียร์ยาภรณ์","รัชญาพร","ปู"]
-    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด","นรวัฒน์","วรวัฒน์"]
-    let t_SSP = ["สถิต"]
+    let t_PLS = ["ปัดชญาภรณ์","ปัดเชียร์พร","ปัดเชียร์ยาก่อน","พัทยาพร","ปรัชยาพร","ปัดเชียร์ยาภรณ์","รัชญาพร","ปู","ปรัเชียร์พร","ปัดยพร","ปรัยาภรณ์"]
+    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด","นรวัฒน์","วรวัฒน์","วราวัด"]
+    let t_SSP = ["สถิต","สาธิต","ชาทิศ"]
     let t_SWK = ["สุวัฒชัย","สุวรรณชัย","ถ้วย","ช่วย"]
     let t_TNA = ["ธนภัทร","ธนพัฒน์"]
     let t_NSD = ["นัดทะวุด","นัดทวุฒิ"]
+    
+    let r_6181 = ["618 / หนึ่ง","618ทับหนึ่ง"]
+    let r_6182 = ["618 / สอง","618ทับสอง"]
     
     
     override func viewDidLoad() {
@@ -127,12 +128,12 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         // Start location services to get the true heading.
         
         locationManager.startUpdatingLocation()
-
+        
         speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
-
+        
         print("viewDidLoad")
         
-      
+        
         
         let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
         //        let uuid = UUID(uuidString: "10F86430-1346-11E4-9191-0800200C9A66")
@@ -163,25 +164,24 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     
     @IBAction func micpress(_ sender: Any) {
         
-        if (checkstate == 0) {
+        if (checkstate == 1) {
             speech("ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง")
         }else{
-           
+            
             if audioEngine.isRunning {
-               
+                
                 audioEngine.stop()
                 recognitionRequest?.endAudio()
-                
                 recordButton.isEnabled = false
                 print("StopRecording")
                 recordButton.tintColor = .white
-//
+                
                 
             } else {
                 sceneView.scene.rootNode.enumerateChildNodes { (node, stop) in
                     node.removeFromParentNode()
                 }
-//
+                textinput = "nil"
                 startRecording()
                 print("Recording")
                 recordButton.tintColor = .systemBlue
@@ -308,7 +308,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         speechUtterance.rate = AVSpeechUtteranceMaximumSpeechRate / 2
         speechUtterance.voice = AVSpeechSynthesisVoice(language: langSpeech)
         speechSynthesizer.speak(speechUtterance)
-       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -339,7 +339,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         }
     }
     
-
+    
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
@@ -427,14 +427,10 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             (data, response, error) in
             do{if error == nil{
                 self.arrdatateacher = try JSONDecoder().decode([teacherjsonstruct].self, from: data!)
-                for mainarr in self.arrdatateacher{
-                    print(mainarr.aka,":",mainarr.name)
-                    
-                }
-                print("number of list",self.arrdatateacher.count)
+                print("Get json teacher successful number of list :",self.arrdatateacher.count)
                 }
             }catch{
-                print("Error in get json data teacher")
+                print("Error in get json data teacher from server")
             }
         }.resume()
     }
@@ -445,15 +441,11 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         URLSession.shared.dataTask(with: url!) {
             (data, response, error) in
             do{if error == nil{
-                
                 self.arrdataroom = try JSONDecoder().decode([roomjsonstruct].self, from: data!)
-                for mainarr in self.arrdataroom{
-                    print(mainarr.room)
-                }
-                print("number of list",self.arrdataroom.count)
+                print("Get json room successful number of list :",self.arrdataroom.count)
                 }
             }catch{
-                print("Error in get json data room")
+                print("Error in get json data teacher from server")
             }
         }.resume()
     }
@@ -466,7 +458,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         type = "0"
         let formatter1 = DateFormatter()
         let formatter2 = DateFormatter()
-        //2016-12-08 03:37:22 433+0000
+        
         formatter1.dateFormat = "EEEE"
         formatter2.dateFormat = "HH:mm"
         let now = Date()
@@ -475,232 +467,259 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         let dateString2 = formatter2.string(from: now)
         datetimeuse = dateString2
         print("Time Now : ",datedayuse,datetimeuse)
+        showtext = textinput
         if type == "0"{
             if textinput.contains("ห้องพัก") {
                 find = "1111"
                 type = "1"
-                print("Find = "+find)
+                print("Has been found = "+find)
+                showtext = "ห้องพักอาจารย์"
                 
             }
         }
         if type == "0"{
+            print("Searching....Room in Database")
             for mainarr in self.arrdataroom{
-                print("Searching....room",mainarr)
+                
                 if textinput.contains(mainarr.room) {
                     find = mainarr.room
                     type = "1"
-                    print("Find = "+find)
-                 
+                    print("Has been found = "+find)
+                    showtext = "ห้อง "+mainarr.room
                     break
                 }
             }
         }
         if type == "0"{
+            print("Searching....Teacher in Database")
             for mainarr in self.arrdatateacher{
-                print("Searching....Teacher",mainarr)
                 if textinput.contains(mainarr.name) {
                     find = mainarr.aka
                     type = "2"
-                    print("Find = "+find)
-                    showtext = mainarr.name
+                    print("Has been found = "+find)
+                    showtext = "อาจารย์"+mainarr.name
                     break
                     
                 }
             }
         }
         if type == "0"{
+                   print("Searching....Room synonymin name")
+                   for mainarr in self.r_6181{
+                       if textinput.contains(mainarr) {
+                           find = "6181"
+                           type = "1"
+                           showtext = "ห้อง 618/1"
+                           print("Has been found = "+find)
+                           break
+                       }
+                   }
+               }
+        if type == "0"{
+          
+            for mainarr in self.r_6182{
+                if textinput.contains(mainarr) {
+                    find = "6182"
+                    type = "1"
+                    showtext = "ห้อง 618/2"
+                    print("Has been found = "+find)
+                    break
+                }
+            }
+        }
+        if type == "0"{
+            print("Searching....Teacher synonymin name")
             for mainarr in self.t_AWS{
-                
                 if textinput.contains(mainarr) {
                     find = "AWS"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์อนุสรณ์"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_LPP{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "LPP"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์ลือพล"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_ENS{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "ENS"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์เอิญ"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_ADP{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "ADP"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์อัครา"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_CHR{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "CHR"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์เฉียบวุฒิ"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_BLT{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "BLT"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์เบญจพร"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_GDP{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "GDP"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์กฤดาภัทร"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_KAB{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "KAB"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์คันธารัตน์"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_KSB{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "KSB"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์กอบเกียรติ"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_NKS{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "NKS"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์นิกร"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_NSN{
-                //            print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "NSN"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์นนทกร"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_PLS{
-                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "PLS"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์ปรัชญาพร"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_PRV{
-                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "PRV"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์ปรวัฒน์"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_SSP{
-                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "SSP"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์สถิตย์"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_SWK{
-                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "SWK"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์สุวัจชัย"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_TNA{
-                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "TNA"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์ธนภัทร์"
+                    print("Has been found = "+find)
                     break
                 }
             }
         }
         if type == "0"{
             for mainarr in self.t_NSD{
-                print("Searching....AWS",mainarr)
                 if textinput.contains(mainarr) {
                     find = "NSD"
                     type = "2"
-                    print("Find = "+find)
+                    showtext = "อาจารย์ณัฐวุฒิ"
+                    print("Has been found = "+find)
                     break
                 }
             }
             
         }
-        showtext = find
-        if(find == "1111"){
-            showtext = "ห้องพักอาจารย์"
-        }
+        
+        
         if(textinput == "nil"){
+           
             showtext = "ไม่ได้รับข้อความที่คุณค้นหา"
         }
         
@@ -710,7 +729,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
                 let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-//                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=2"+"&rssi=75"+"&dir="+self.dir)
+                //                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=2"+"&rssi=75"+"&dir="+self.dir)
                 
                 
                 print(url as Any)
@@ -737,7 +756,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }))
             self.present(alert, animated: true, completion: nil)
         }else{
-            
+             print("Not found")
             
             let alert = UIAlertController(title: "ไม่พบข้อความที่คุณค้นหา กรุณาลองใหม่อีกครั้ง", message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "try agian", style: .default, handler: { action in
@@ -749,14 +768,14 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     func createArrow(at position: SCNVector3,at r:String) -> SCNNode {
         
         // 2
-       
+        
         let node = SCNNode()
         let scene:SCNScene
         if(r=="0"){
             scene = SCNScene(named: "art.scnassets/gem.scn")!
         }else{
             scene = SCNScene(named: "art.scnassets/"+r+".scn")!
-//            scene = SCNScene(named: "art.scnassets/diamond.scn")!
+            //            scene = SCNScene(named: "art.scnassets/diamond.scn")!
         }
         
         
@@ -775,7 +794,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     func direction()  {
         
         for mainarr in self.arrdatarespon{
-           
+            
             let position = SCNVector3(mainarr.x, mainarr.y , mainarr.z)
             
             let mars = createArrow(at: position,at: mainarr.r)
@@ -788,7 +807,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
     }
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        print("startdir")
+        
         if newHeading.headingAccuracy < 0 {
             return
         }
@@ -802,14 +821,10 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         UIView.animate(withDuration: 0.5) {
             
         }
-        
-        
         var tempdir = Double(heading)
         tempdir.round()
         dir = String(tempdir)
-        //        dir = String(heading)
-        
-        print(dir)
+        print("Direction of user : "+dir)
         
         
         

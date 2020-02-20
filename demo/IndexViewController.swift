@@ -10,13 +10,33 @@ import UIKit
 
 
 class IndexViewController: UIViewController {
-
+    
+    @IBOutlet weak var button: UIButton!
+    
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
          print("IndexViewController")
         // Do any additional setup after loading the view.
+        if defaults.bool(forKey: "First Launch") == true {
+                   
+                   print("Second+")
+//                   button.sendActions(for: .touchUpInside)
+            // Run Code After First Launch
+                   
+                   defaults.set(true, forKey: "First Launch")
+                   
+               } else {
+                   
+                   
+                   print("First")
+                   
+                   // Run Code During First Launch
+                   defaults.set(true, forKey: "First Launch")
+                   
+               }
     }
-    
 
     @IBAction func indexButton(_ sender: Any) {
           print("ButtonClicked")
