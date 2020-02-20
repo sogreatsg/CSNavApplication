@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
    
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    var ipserver = "172.22.0.244"
+    var ipserver = "172.22.1.191"
     
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
@@ -83,7 +83,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     let t_ENS = ["เอิน", "เอิร์น"]
     let t_ADP = [""]
     let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด"]
-    let t_BLT = [""]
+    let t_BLT = ["เบญญาพร"]
     let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส","กิ๊บดำผัด","กฤษดาผัก","ปริศฎาพัด"]
     let t_KAB = ["คันธารัตย์","แก๊ส"]
     let t_KSB = ["กอบเกียรติ์"]
@@ -164,9 +164,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
        
         
 
-        let text = "สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย"
-        
-        speech(text)
+
+        speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
 
 
         
@@ -191,7 +190,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         self.locationManager.startMonitoring(for: beaconRegion)
         print("iBeacon starting")
         
-       
  
     }
     
@@ -204,38 +202,32 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     }
    
     @IBAction func micpress(_ sender: Any) {
+        
         if (checkstate == 0) {
-            let text = "ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง"
-            speech(text)
+         
+            speech("ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง")
         }else{
-            
             if audioEngine.isRunning {
-              
-                audioEngine.stop()
-                recognitionRequest?.endAudio()
-                recordButton.isEnabled = false
-                
-                print("StopRecording")
-                recordButton.tintColor = .white
-                  
-                  
-            
-                  
-              } else {
-              
-               
-                startRecording()
-                  
-                print("Recording")
-                recordButton.tintColor = .systemBlue
-              }
+
+                     audioEngine.stop()
+                     recognitionRequest?.endAudio()
+                     recordButton.isEnabled = false
+                     print("StopRecording")
+                     recordButton.tintColor = .white
+
+
+                   } else {
+                     startRecording()
+                     print("Recording")
+                     recordButton.tintColor = .systemBlue
+                   }
         }
         
           
     }
     
     
-    
+   
     
     func requestAuthorization(){
       SFSpeechRecognizer.requestAuthorization { authStatus in
@@ -350,7 +342,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     
     func speech(_ text: String) {
     
-        print("Start Speech")
+        print("Start Speech : "+text)
         let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string:text)
         speechUtterance.rate = AVSpeechUtteranceMaximumSpeechRate / 2
         speechUtterance.voice = AVSpeechSynthesisVoice(language: langSpeech)
@@ -453,14 +445,16 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 if (ttzone != 0 ){
                     rssisum += ttzone
                     numrssi += 1
+                   
                 }
                
             }
-        
+            
+        if(numrssi == 5){
              rssiavg = rssisum / numrssi
-//             numrssi = 0
-//            print("rssiavg" , rssiavg)
+
            
+        }
             
         
         if (temp != zone){
@@ -474,6 +468,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         }
     
     func readDataTeacher()  {
+        
               print("Starting GET Data Teacher")
               let url = URL(string:"http://"+ipserver+":8084/WebApplication/jsondata.json")
               URLSession.shared.dataTask(with: url!) {
@@ -514,7 +509,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     func postData(textinput:String) {
         
         rssiuse = String(rssi)
-        
+         
        
        
         type = "0"
@@ -748,29 +743,35 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }
             
         }
-       
+        var showtext = find
+        if(find == "1111"){
+            showtext = "ห้องพักอาจารย์"
+          
+        }
+      
         if (type != "0"){
-            let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา" , message: find, preferredStyle: .alert)
+
+            let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา" , message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
                 let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-//               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=1"+"&rssi=75"+"&dir="+self.dir)
+//               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=3"+"&rssi=75"+"&dir="+self.dir)
 
 
                 print(url as Any)
                 URLSession.shared.dataTask(with: url!) {
                     (data, response, error) in
                     do{if error == nil{
-                      
+
                         self.arrdatarespon = try JSONDecoder().decode([responjsonstruct].self, from: data!)
                         for mainarr in self.arrdatarespon{
                             print(mainarr.x,":",mainarr.y,":",mainarr.z)
                         }
                         print("number of list",self.arrdatarespon.count)
                         }
-                     
+
                         self.direction()
-                       
+
                     }catch{
                         print("Error in get json data respon")
                     }
@@ -781,6 +782,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }))
             self.present(alert, animated: true, completion: nil)
         }else{
+         
+
             let alert = UIAlertController(title: "ไม่พบข้อความที่คุณค้นหา กรุณาลองใหม่อีกครั้ง", message: textinput, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "try agian", style: .default, handler: { action in
                 print("try agian")
@@ -814,11 +817,9 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             sceneView.scene = scene
 
         }
-//        scene = SCNScene(named: "art.scnassets/model.scn")!
-     
-//        let text = "เดินตามลูกศรเพื่อไปยังจุดหมายได้เลย"
-//               speech(text)
-//
+
+            speech("เดินตามลูกศรเพื่อไปยังจุดหมายได้เลย")
+
     }
      func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
             print("startdir")
