@@ -19,7 +19,9 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     @IBOutlet var sceneView: ARSCNView!
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    var ipserver = "172.20.10.3"
+    var ipserver = "52.14.73.146"
+    
+    
     
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
@@ -76,18 +78,18 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     
     
     let t_AWS = [""]
-    let t_LPP = ["หรือพล","ลืพล","ลืมพล","ลืมล","ลืมโอน","หรือผล"]
-    let t_ENS = ["เอิน", "เอิร์น"]
-    let t_ADP = [""]
-    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด","เจียบวุด","เชฟวุต","เฉียบนุช","เชียร์บูธ","เชียงพุทธ","เชียร์พุทธ","เฉียบวัด","เชียงวุต","เฉียบบูธ","เฉี๊ยบพุทธ","เชื่อพูด","เชียร์กู๊ด","ชาวพุทธ","เฉียบพุทธ","เฉียบ","จัดบูธ","เชฟพุทธ","เชี่ยวกู๊ด"]
+    let t_LPP = ["หรือพล","ลืพล","ลืมพล","ลืมล","ลืมโอน","หรือผล","ลือ","เหลือ"]
+    let t_ENS = ["เอิน", "เอิร์น","อื่น"]
+    let t_ADP = ["อักขระ"]
+    let t_CHR = ["เจี๊ยบวุต", "เฉียบวุต", "เชียบวุต","เชื่อวุต","เชียร์คุณ","เฉียบพูด","เจียบวุด","เชฟวุต","เฉียบนุช","เชียร์บูธ","เชียงพุทธ","เชียร์พุทธ","เฉียบวัด","เชียงวุต","เฉียบบูธ","เฉี๊ยบพุทธ","เชื่อพูด","เชียร์กู๊ด","ชาวพุทธ","เฉียบพุทธ","เฉียบ","จัดบูธ","เชฟพุทธ","เชี่ยวกู๊ด","เชียร์บุตร","เชฟบูธ"]
     let t_BLT = ["เบญญาพร","เบนจะพร"]
-    let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส","กิ๊บดำผัด","กฤษดาผัก","ปริศฎาพัด"]
+    let t_GDP = ["กฤษฎาพัฒน์", "เกดนภัส","กิ๊บดำผัด","กฤษดาผัก","ปริศฎาพัด","กิจจาพัฒน์","กิจดาพัด","กฤษฎาพัฒน์"]
     let t_KAB = ["คันธารัตย์","แก๊ส","แก๊ป","ทิพย์","คันธรัตน์"]
-    let t_KSB = ["กอบเกียรติ์"]
+    let t_KSB = ["กอบเกียรติ์","กอล์ฟเกียรติ","กอล์ฟเจี๊ยบ","ก่อเกียรติ","กอล์ฟเกลียด"]
     let t_NKS = ["ได้ก่อน","นึกก่อน","นิก่อน","นิกก่อน"]
     let t_NSN = [""]
     let t_PLS = ["ปัดชญาภรณ์","ปัดเชียร์พร","ปัดเชียร์ยาก่อน","พัทยาพร","ปรัชยาพร","ปัดเชียร์ยาภรณ์","รัชญาพร","ปู","ปรัเชียร์พร","ปัดยพร","ปรัยาภรณ์"]
-    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด","นรวัฒน์","วรวัฒน์","วราวัด"]
+    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด","นรวัฒน์","วรวัฒน์","วราวัด","เปี๊ยก"]
     let t_SSP = ["สถิต","สาธิต","ชาทิศ"]
     let t_SWK = ["สุวัฒชัย","สุวรรณชัย","ถ้วย","ช่วย"]
     let t_TNA = ["ธนภัทร","ธนพัฒน์"]
@@ -100,6 +102,9 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        
+        
         
         readDataTeacher()
         readDataRoom()
@@ -129,10 +134,15 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         locationManager.startUpdatingLocation()
         
-        speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
+        speech("  สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
         
         print("viewDidLoad")
         
+//        let position = SCNVector3(0, -1 , -1)
+//        let mars = createArrow(at: position,at: "0")
+//        scene.rootNode.addChildNode(mars)
+//        sceneView.scene = scene
+//        
         
         
         let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
@@ -162,9 +172,10 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
     }
     
+    
     @IBAction func micpress(_ sender: Any) {
         
-        if (checkstate == 1) {
+        if (checkstate == 0) {
             speech("ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง")
         }else{
             
@@ -404,17 +415,14 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         if(numrssi == 5){
             rssiavg = rssisum / numrssi
+            rssi = temp
             
             
         }
         
         
-        if (temp != zone){
-            
-            zone = temp
-            rssi = zone
-            
-        }
+        
+        
         
         
     }
@@ -422,7 +430,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     func readDataTeacher()  {
         
         print("Starting GET Data Teacher")
-        let url = URL(string:"http://"+ipserver+":8084/WebApplication/jsondata.json")
+        let url = URL(string:"http://"+ipserver+":8084/WebApplication/teacherjsondata.json")
         URLSession.shared.dataTask(with: url!) {
             (data, response, error) in
             do{if error == nil{
@@ -504,19 +512,19 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }
         }
         if type == "0"{
-                   print("Searching....Room synonymin name")
-                   for mainarr in self.r_6181{
-                       if textinput.contains(mainarr) {
-                           find = "6181"
-                           type = "1"
-                           showtext = "ห้อง 618/1"
-                           print("Has been found = "+find)
-                           break
-                       }
-                   }
-               }
+            print("Searching....Room synonymin name")
+            for mainarr in self.r_6181{
+                if textinput.contains(mainarr) {
+                    find = "6181"
+                    type = "1"
+                    showtext = "ห้อง 618/1"
+                    print("Has been found = "+find)
+                    break
+                }
+            }
+        }
         if type == "0"{
-          
+            
             for mainarr in self.r_6182{
                 if textinput.contains(mainarr) {
                     find = "6182"
@@ -719,7 +727,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         
         if(textinput == "nil"){
-           
+            
             showtext = "ไม่ได้รับข้อความที่คุณค้นหา"
         }
         
@@ -756,7 +764,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }))
             self.present(alert, animated: true, completion: nil)
         }else{
-             print("Not found")
+            print("Not found")
             
             let alert = UIAlertController(title: "ไม่พบข้อความที่คุณค้นหา กรุณาลองใหม่อีกครั้ง", message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "try agian", style: .default, handler: { action in

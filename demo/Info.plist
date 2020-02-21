@@ -52,5 +52,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SukhumvitSet.ttc</string>
+	</array>
 </dict>
 </plist>

@@ -14,6 +14,7 @@
 		51162F29239032B400541BBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51162F28239032B400541BBC /* Assets.xcassets */; };
 		51162F2C239032B400541BBC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51162F2A239032B400541BBC /* LaunchScreen.storyboard */; };
 		51162F342390392200541BBC /* IndexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51162F332390392200541BBC /* IndexViewController.swift */; };
+		51D07AD123FFCFDF000AB502 /* SukhumvitSet.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 51D07AD023FFCFD3000AB502 /* SukhumvitSet.ttc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		51162F2B239032B400541BBC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		51162F2D239032B400541BBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51162F332390392200541BBC /* IndexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexViewController.swift; sourceTree = "<group>"; };
+		51D07AD023FFCFD3000AB502 /* SukhumvitSet.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = SukhumvitSet.ttc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				51162F1F239032B000541BBC /* AppDelegate.swift */,
 				51162F21239032B000541BBC /* art.scnassets */,
 				51162F332390392200541BBC /* IndexViewController.swift */,
+				51D07ACF23FFCF96000AB502 /* fonts */,
 				51162F23239032B000541BBC /* ViewController.swift */,
 				51162F25239032B000541BBC /* Main.storyboard */,
 				51162F28239032B400541BBC /* Assets.xcassets */,
@@ -68,6 +71,14 @@
 				51162F2D239032B400541BBC /* Info.plist */,
 			);
 			path = demo;
+			sourceTree = "<group>";
+		};
+		51D07ACF23FFCF96000AB502 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				51D07AD023FFCFD3000AB502 /* SukhumvitSet.ttc */,
+			);
+			path = fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,6 +142,7 @@
 				51162F22239032B000541BBC /* art.scnassets in Resources */,
 				51162F2C239032B400541BBC /* LaunchScreen.storyboard in Resources */,
 				51162F29239032B400541BBC /* Assets.xcassets in Resources */,
+				51D07AD123FFCFDF000AB502 /* SukhumvitSet.ttc in Resources */,
 				51162F27239032B000541BBC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

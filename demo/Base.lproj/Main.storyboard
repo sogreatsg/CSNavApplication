@@ -6,6 +6,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SukhumvitSet.ttc">
+            <string>SukhumvitSet-Text</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Index View Controller-->
         <scene sceneID="cdF-Ff-1Io">
@@ -15,8 +20,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WYa-lf-sqS">
-                                <rect key="frame" x="137" y="716" width="100" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="skipbutton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WYa-lf-sqS" userLabel="SkipButton">
+                                <rect key="frame" x="137" y="750" width="100" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Skip">
@@ -24,17 +29,29 @@
                                 </state>
                                 <connections>
                                     <action selector="indexButton:" destination="dZs-qi-Qbo" eventType="touchUpInside" id="jgl-FV-7hj"/>
-                                    <segue destination="BV1-FR-VrT" kind="presentation" identifier="mySegueID" modalPresentationStyle="fullScreen" id="emK-LB-18P"/>
+                                    <segue destination="BV1-FR-VrT" kind="presentation" identifier="Index-Main" modalPresentationStyle="fullScreen" id="emK-LB-18P"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="intro" translatesAutoresizingMaskIntoConstraints="NO" id="rv6-24-gcs">
                                 <rect key="frame" x="57" y="19" width="260" height="759"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                             </imageView>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVG-Mt-RtF" userLabel="infoButton">
+                                <rect key="frame" x="310" y="47" width="26" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="exclamationmark.circle.fill" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="black"/>
+                                </state>
+                                <connections>
+                                    <segue destination="0PO-FP-nIr" kind="presentation" identifier="Index-Info" id="qPU-Ro-OYn"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.27450980392156865" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="Bvf-aC-NEm"/>
                     </view>
+                    <navigationItem key="navigationItem" id="4PN-Fc-3yU"/>
                     <connections>
                         <outlet property="button" destination="WYa-lf-sqS" id="vjr-pg-0PH"/>
                         <outlet property="intro" destination="rv6-24-gcs" id="dpL-Hc-ecb"/>
@@ -44,10 +61,54 @@
             </objects>
             <point key="canvasLocation" x="-728.98550724637687" y="62.946428571428569"/>
         </scene>
+        <!--InfoViewController-->
+        <scene sceneID="c9T-zR-IXr">
+            <objects>
+                <viewController storyboardIdentifier="InfoViewController" id="0PO-FP-nIr" userLabel="InfoViewController" customClass="InfoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="P6o-zW-nFw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ข้อตกลงการใช้งาน" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wXv-et-v6x">
+                                <rect key="frame" x="130" y="39" width="128" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="SukhumvitSet-Text" family="Sukhumvit Set" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.27450980390000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="16" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OZF-3H-Hgk">
+                                <rect key="frame" x="16" y="63" width="343" height="209"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <mutableString key="content">ข้อกำหนดเหล่านี้ ("ข้อกำหนด") จะครอบคลุมการใช้งานผลิตภัณฑ์ และบริการสำหรับแอปพลิเคชัน "CSNav" ซึ่ง ระบุไว้ ที่นี่  คุณยอมรับข้อกำหนดเหล่านี้โดยการใช้งานนต่อไปหลังจากที่ได้รับแจ้งให้ทราบถึงข้อกำหนดเหล่านี้  1.แอปพลิเคชันอาจมีการแสดงผลที่ผิดพลาดจากการทำงานของอุปกรณ์ซึ่งอาจส่งผลให้มีการแสดงผลไปในทิศทางที่ผิดอาจก่อให้เกิดอันตรายต่อผู้ใช้งาน เพื่อความปลอดภัยผู้ใช้งานจำเป็นจะต้องใช้วิจารณญาณในขณะที่ใช้งาน 2.ในขณะใช้งานผู้ใช้ควรตรวจสอบสภาพแวดล้อมรอบข้าง ซึ่งอาจก่อให้เกิดอันตรายจากสภาพแวดล้อมรอบข้าง เช่นเดินชนเก้าอี้หรือโต๊ะในบริเวณโดยรอบ 3.หากการนำทางผิดพลาดโดยเกิดจากประสิทธิภาพของอุปกรณ์ของผู้ใช้งานเองทางผู้พัฒนาจะไม่สามารถแก้ไขปัญหานั้นๆได้ 4.หากเกิดอุบัติเหตุจากการใช้งาน ทางผู้พัฒนาไม่มีส่วนรัชผิดชอบต่อเหตุการณ์ที่เกิดขึ้น 5.ความพร้อมให้บริการรวมถึงประสิทธิภาพในการแสดงผลขึ้นอยู่กับประสิทธิภาพของอุปกรณ์ของผู้ใช้งาน 6.เราสามารถเปลี่ยนแปลงข้อกำหนดเหล่านี้เมื่อใดก็ได้ และเราจะแจ้งให้คุณทราบเมื่อเราทำเช่นนั้น การใช้บริการหลังจากที่การเปลี่ยนแปลงมีผลใช้บังคับหมายความว่าคุณตกลงตามข้อกำหนดใหม่ หากคุณไม่ตกลงตามข้อกำหนดใหม่ คุณจะต้องหยุดใช้บริการ  และในกรณีที่คุณเป็นบิดามารดาหรือผู้ปกครอง ให้ช่วยบุตรหลานของคุณ</mutableString>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="8" name="SukhumvitSet-Text"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.71253506108370468" green="0.7994776276537513" blue="0.89028791243654826" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <viewLayoutGuide key="safeArea" id="mMd-rV-MzF"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="CWU-6t-fmk">
+                        <barButtonItem key="backBarButtonItem" title="Item" id="9b0-dq-KBc">
+                            <color key="tintColor" red="0.0" green="0.27450980390000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wSC-ef-nY8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="157.59999999999999" y="-211.33004926108376"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController storyboardIdentifier="MainViewController" id="BV1-FR-VrT" customClass="ViewController" customModule="CSNav" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" id="BV1-FR-VrT" customClass="ViewController" customModule="CSNav" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U0K-SW-4ec">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -80,10 +141,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.5" y="63.281249999999993"/>
+            <point key="canvasLocation" x="158" y="478"/>
         </scene>
     </scenes>
     <resources>
+        <image name="exclamationmark.circle.fill" catalog="system" width="64" height="60"/>
         <image name="intro" width="1124" height="2200"/>
         <image name="mic.circle.fill" catalog="system" width="64" height="60"/>
     </resources>
