@@ -93,7 +93,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     let t_SSP = ["สถิต","สาธิต","ชาทิศ"]
     let t_SWK = ["สุวัฒชัย","สุวรรณชัย","ถ้วย","ช่วย"]
     let t_TNA = ["ธนภัทร","ธนพัฒน์"]
-    let t_NSD = ["นัดทะวุด","นัดทวุฒิ"]
+    let t_NSD = ["นัดทะวุด","นัดทวุฒิ","นัด"]
     
     let r_6181 = ["618 / หนึ่ง","618ทับหนึ่ง"]
     let r_6182 = ["618 / สอง","618ทับสอง"]
@@ -134,15 +134,15 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         locationManager.startUpdatingLocation()
         
-        speech("  สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
+        speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
         
         print("viewDidLoad")
         
-//        let position = SCNVector3(0, -1 , -1)
-//        let mars = createArrow(at: position,at: "0")
-//        scene.rootNode.addChildNode(mars)
-//        sceneView.scene = scene
-//        
+        let position = SCNVector3(0, -1 , -5)
+        let mars = createArrow(at: position,at: "625")
+        scene.rootNode.addChildNode(mars)
+        sceneView.scene = scene
+        
         
         
         let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
@@ -175,7 +175,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     
     @IBAction func micpress(_ sender: Any) {
         
-        if (checkstate == 0) {
+        if (checkstate == 1) {
             speech("ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง")
         }else{
             
@@ -736,8 +736,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา" , message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
-                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-                //                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=2"+"&rssi=75"+"&dir="+self.dir)
+//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
+                                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=2"+"&rssi=75"+"&dir="+self.dir)
                 
                 
                 print(url as Any)
