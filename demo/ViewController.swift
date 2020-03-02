@@ -14,6 +14,7 @@ import CoreLocation
 import Speech
 import AVFoundation
 
+
 class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDelegate,SFSpeechRecognizerDelegate{
     
     @IBOutlet var sceneView: ARSCNView!
@@ -21,7 +22,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     @IBOutlet weak var recordButton: UIButton!
     var ipserver = "52.14.73.146"
     
-    
+    var vSpinner : UIView?
     
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
@@ -137,11 +138,11 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
         
         print("viewDidLoad")
-        
-        let position = SCNVector3(0, -1 , -5)
-        let mars = createArrow(at: position,at: "625")
-        scene.rootNode.addChildNode(mars)
-        sceneView.scene = scene
+//
+//        let position = SCNVector3(0, -1 , -5)
+//        let mars = createArrow(at: position,at: "0000")
+//        scene.rootNode.addChildNode(mars)
+//        sceneView.scene = scene
         
         
         
@@ -741,6 +742,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 
                 
                 print(url as Any)
+                self.showSpinner(onView: self.view)
                 URLSession.shared.dataTask(with: url!) {
                     (data, response, error) in
                     do{if error == nil{
@@ -810,7 +812,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             sceneView.scene = scene
             
         }
-        
+        self.removeSpinner()
         speech("เดินตามลูกศรเพื่อไปยังจุดหมายได้เลย")
         
     }
@@ -837,7 +839,27 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         
     }
-    
+    func showSpinner(onView : UIView) {
+           let spinnerView = UIView.init(frame: onView.bounds)
+           spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(style: .large)
+           ai.startAnimating()
+           ai.center = spinnerView.center
+           
+           DispatchQueue.main.async {
+               spinnerView.addSubview(ai)
+               onView.addSubview(spinnerView)
+           }
+           
+           vSpinner = spinnerView
+       }
+       
+       func removeSpinner() {
+           DispatchQueue.main.async {
+            self.vSpinner?.removeFromSuperview()
+            self.vSpinner = nil
+           }
+       }
     
     
 }
