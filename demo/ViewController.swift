@@ -20,7 +20,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     @IBOutlet var sceneView: ARSCNView!
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    var ipserver = "52.14.73.146"
+    var ipserver = "172.20.10.2"
     
     var vSpinner : UIView?
     
@@ -140,7 +140,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         print("viewDidLoad")
 //
 //        let position = SCNVector3(0, -1 , -5)
-//        let mars = createArrow(at: position,at: "0000")
+//        let mars = createArrow(at: position,at: "0")
 //        scene.rootNode.addChildNode(mars)
 //        sceneView.scene = scene
         
@@ -479,7 +479,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         showtext = textinput
         if type == "0"{
             if textinput.contains("ห้องพัก") {
-                find = "1111"
+                find = "1"
                 type = "1"
                 print("Has been found = "+find)
                 showtext = "ห้องพักอาจารย์"
@@ -738,7 +738,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
 //                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-                                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=2"+"&rssi=75"+"&dir="+self.dir)
+                                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=1"+"&rssi=75"+"&dir="+self.dir)
                 
                 
                 print(url as Any)
