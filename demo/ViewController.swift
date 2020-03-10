@@ -46,7 +46,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     var rssiuse = "nil"
     var datedayuse = "nil"
     var datetimeuse = "nil"
-    //    var scene = SCNScene(named: "art.scnassets/26191.scn")
     var scene = SCNScene()
     var dir = "nil"
     var rssisum = 0
