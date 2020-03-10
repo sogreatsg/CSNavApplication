@@ -28,6 +28,10 @@
 	<string>Microphone is needed to use for VoiceSeaching</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Speech Recognition use</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SukhumvitSet.ttc</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -42,8 +46,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -51,10 +53,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>SukhumvitSet.ttc</string>
 	</array>
 </dict>
 </plist>

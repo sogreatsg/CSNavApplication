@@ -137,11 +137,11 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
         
         print("viewDidLoad")
-//
-//        let position = SCNVector3(0, -1 , -5)
-//        let mars = createArrow(at: position,at: "0000")
-//        scene.rootNode.addChildNode(mars)
-//        sceneView.scene = scene
+
+        let position = SCNVector3(0, -4 , -4)
+        let mars = createArrow(at: position,at: "robot")
+        scene.rootNode.addChildNode(mars)
+        sceneView.scene = scene
         
         
         
