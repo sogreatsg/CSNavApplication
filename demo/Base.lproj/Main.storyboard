@@ -73,26 +73,19 @@
                                 <rect key="frame" x="130" y="39" width="128" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="SukhumvitSet-Text" family="Sukhumvit Set" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.27450980390000002" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="16" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OZF-3H-Hgk">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="16" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OZF-3H-Hgk">
                                 <rect key="frame" x="16" y="63" width="343" height="209"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <attributedString key="attributedText">
-                                    <fragment>
-                                        <mutableString key="content">ข้อกำหนดเหล่านี้ ("ข้อกำหนด") จะครอบคลุมการใช้งานผลิตภัณฑ์ และบริการสำหรับแอปพลิเคชัน "CSNav" ซึ่ง ระบุไว้ ที่นี่  คุณยอมรับข้อกำหนดเหล่านี้โดยการใช้งานนต่อไปหลังจากที่ได้รับแจ้งให้ทราบถึงข้อกำหนดเหล่านี้  1.แอปพลิเคชันอาจมีการแสดงผลที่ผิดพลาดจากการทำงานของอุปกรณ์ซึ่งอาจส่งผลให้มีการแสดงผลไปในทิศทางที่ผิดอาจก่อให้เกิดอันตรายต่อผู้ใช้งาน เพื่อความปลอดภัยผู้ใช้งานจำเป็นจะต้องใช้วิจารณญาณในขณะที่ใช้งาน 2.ในขณะใช้งานผู้ใช้ควรตรวจสอบสภาพแวดล้อมรอบข้าง ซึ่งอาจก่อให้เกิดอันตรายจากสภาพแวดล้อมรอบข้าง เช่นเดินชนเก้าอี้หรือโต๊ะในบริเวณโดยรอบ 3.หากการนำทางผิดพลาดโดยเกิดจากประสิทธิภาพของอุปกรณ์ของผู้ใช้งานเองทางผู้พัฒนาจะไม่สามารถแก้ไขปัญหานั้นๆได้ 4.หากเกิดอุบัติเหตุจากการใช้งาน ทางผู้พัฒนาไม่มีส่วนรัชผิดชอบต่อเหตุการณ์ที่เกิดขึ้น 5.ความพร้อมให้บริการรวมถึงประสิทธิภาพในการแสดงผลขึ้นอยู่กับประสิทธิภาพของอุปกรณ์ของผู้ใช้งาน 6.เราสามารถเปลี่ยนแปลงข้อกำหนดเหล่านี้เมื่อใดก็ได้ และเราจะแจ้งให้คุณทราบเมื่อเราทำเช่นนั้น การใช้บริการหลังจากที่การเปลี่ยนแปลงมีผลใช้บังคับหมายความว่าคุณตกลงตามข้อกำหนดใหม่ หากคุณไม่ตกลงตามข้อกำหนดใหม่ คุณจะต้องหยุดใช้บริการ  และในกรณีที่คุณเป็นบิดามารดาหรือผู้ปกครอง ให้ช่วยบุตรหลานของคุณ</mutableString>
-                                        <attributes>
-                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="NSFont" size="8" name="SukhumvitSet-Text"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
+                                <string key="text">ข้อกำหนดเหล่านี้ ("ข้อกำหนด") จะครอบคลุมการใช้งานผลิตภัณฑ์ และบริการสำหรับแอปพลิเคชัน "CSNav" ซึ่ง ระบุไว้ ที่นี่  คุณยอมรับข้อกำหนดเหล่านี้โดยการใช้งานนต่อไปหลังจากที่ได้รับแจ้งให้ทราบถึงข้อกำหนดเหล่านี้  1.แอปพลิเคชันอาจมีการแสดงผลที่ผิดพลาดจากการทำงานของอุปกรณ์ซึ่งอาจส่งผลให้มีการแสดงผลไปในทิศทางที่ผิดอาจก่อให้เกิดอันตรายต่อผู้ใช้งาน เพื่อความปลอดภัยผู้ใช้งานจำเป็นจะต้องใช้วิจารณญาณในขณะที่ใช้งาน 2.ในขณะใช้งานผู้ใช้ควรตรวจสอบสภาพแวดล้อมรอบข้าง ซึ่งอาจก่อให้เกิดอันตรายจากสภาพแวดล้อมรอบข้าง เช่นเดินชนเก้าอี้หรือโต๊ะในบริเวณโดยรอบ 3.หากการนำทางผิดพลาดโดยเกิดจากประสิทธิภาพของอุปกรณ์ของผู้ใช้งานเองทางผู้พัฒนาจะไม่สามารถแก้ไขปัญหานั้นๆได้ 4.หากเกิดอุบัติเหตุจากการใช้งาน ทางผู้พัฒนาไม่มีส่วนรัชผิดชอบต่อเหตุการณ์ที่เกิดขึ้น 5.ความพร้อมให้บริการรวมถึงประสิทธิภาพในการแสดงผลขึ้นอยู่กับประสิทธิภาพของอุปกรณ์ของผู้ใช้งาน 6.เราสามารถเปลี่ยนแปลงข้อกำหนดเหล่านี้เมื่อใดก็ได้ และเราจะแจ้งให้คุณทราบเมื่อเราทำเช่นนั้น การใช้บริการหลังจากที่การเปลี่ยนแปลงมีผลใช้บังคับหมายความว่าคุณตกลงตามข้อกำหนดใหม่ หากคุณไม่ตกลงตามข้อกำหนดใหม่ คุณจะต้องหยุดใช้บริการ  และในกรณีที่คุณเป็นบิดามารดาหรือผู้ปกครอง ให้ช่วยบุตรหลานของคุณ</string>
+                                <fontDescription key="fontDescription" name="SukhumvitSet-Text" family="Sukhumvit Set" pointSize="8"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.71253506108370468" green="0.7994776276537513" blue="0.89028791243654826" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" red="0.0078431372549019607" green="0.27058823529411763" blue="0.47843137254901957" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <viewLayoutGuide key="safeArea" id="mMd-rV-MzF"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="CWU-6t-fmk">

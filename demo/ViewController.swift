@@ -20,7 +20,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     @IBOutlet var sceneView: ARSCNView!
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-    var ipserver = "172.20.10.2"
+//    var ipserver = "52.14.73.146"
+    var ipserver = "172.20.10.3"
     
     var vSpinner : UIView?
     
@@ -70,6 +71,10 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         let x:Double
         let y:Double
         let z:Double
+        let a:Double
+        let b:Double
+        let c:Double
+        
         
     }
     var arrdatarespon=[responjsonstruct]()
@@ -89,7 +94,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     let t_NKS = ["ได้ก่อน","นึกก่อน","นิก่อน","นิกก่อน"]
     let t_NSN = [""]
     let t_PLS = ["ปัดชญาภรณ์","ปัดเชียร์พร","ปัดเชียร์ยาก่อน","พัทยาพร","ปรัชยาพร","ปัดเชียร์ยาภรณ์","รัชญาพร","ปู","ปรัเชียร์พร","ปัดยพร","ปรัยาภรณ์"]
-    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด","นรวัฒน์","วรวัฒน์","วราวัด","เปี๊ยก"]
+    let t_PRV = ["ปรวัติ","ประวัติ","ปาราวัด","นรวัฒน์","วรวัฒน์","วราวัด","เปี๊ยก","สารวัต","ธารารัตน์"]
     let t_SSP = ["สถิต","สาธิต","ชาทิศ"]
     let t_SWK = ["สุวัฒชัย","สุวรรณชัย","ถ้วย","ช่วย"]
     let t_TNA = ["ธนภัทร","ธนพัฒน์"]
@@ -138,10 +143,25 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         print("viewDidLoad")
 
-        let position = SCNVector3(0, -4 , -4)
-        let mars = createArrow(at: position,at: "robot")
+//        let position = SCNVector3(0, -4 , -4)
+//        let euler = SCNVector3(0, 0 , 0)
+//        let mars = createArrow(at: position, at: euler, at: "robot")
+//        scene.rootNode.addChildNode(mars)
+//        sceneView.scene = scene
+        var position = SCNVector3(0, -1 , -1)
+        var euler = SCNVector3(0, 0 , 0)
+        var mars = createArrow(at: position, at: euler, at: "arrow")
+        scene.rootNode.addChildNode(mars)
+        position = SCNVector3(0, -2 , -1)
+        euler = SCNVector3(0, 360 , 0)
+        mars = createArrow(at: position, at: euler, at: "arrow")
+        scene.rootNode.addChildNode(mars)
+        position = SCNVector3(0, -3 , -1)
+        euler = SCNVector3(0, 90 , 0)
+        mars = createArrow(at: position, at: euler, at: "arrow")
         scene.rootNode.addChildNode(mars)
         sceneView.scene = scene
+
         
         
         
@@ -477,7 +497,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         print("Time Now : ",datedayuse,datetimeuse)
         showtext = textinput
         if type == "0"{
-            if textinput.contains("ห้องพัก") {
+            if textinput.contains("พักอาจารย์") {
                 find = "1111"
                 type = "1"
                 print("Has been found = "+find)
@@ -737,7 +757,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
 //                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-                                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=2"+"&rssi=75"+"&dir="+self.dir)
+                                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=1"+"&rssi=75"+"&dir="+self.dir)
                 
                 
                 print(url as Any)
@@ -747,9 +767,9 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                     do{if error == nil{
                         
                         self.arrdatarespon = try JSONDecoder().decode([responjsonstruct].self, from: data!)
-                        for mainarr in self.arrdatarespon{
-                            print(mainarr.r,":",mainarr.x,":",mainarr.y,":",mainarr.z)
-                        }
+//                        for mainarr in self.arrdatarespon{
+//                            print(mainarr.r,":",mainarr.x,":",mainarr.y,":",mainarr.z,":",mainarr.a,":",mainarr.b,":",mainarr.c)
+//                        }
                         print("number of list",self.arrdatarespon.count)
                         }
                         
@@ -774,14 +794,14 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             self.present(alert, animated: true, completion: nil)
         }
     }
-    func createArrow(at position: SCNVector3,at r:String) -> SCNNode {
+    func createArrow(at position: SCNVector3, at euler: SCNVector3, at r:String) -> SCNNode {
         
         // 2
         
         let node = SCNNode()
         let scene:SCNScene
         if(r=="0"){
-            scene = SCNScene(named: "art.scnassets/gem.scn")!
+            scene = SCNScene(named: "art.scnassets/arrow.scn")!
         }else{
             scene = SCNScene(named: "art.scnassets/"+r+".scn")!
             //            scene = SCNScene(named: "art.scnassets/diamond.scn")!
@@ -796,7 +816,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         // 3
         node.position = position
-        node.eulerAngles = SCNVector3(0, 0 , 0)
+        node.eulerAngles = euler
+        print("Mark y:"  + String(euler.y))
         // 4
         return node
     }
@@ -804,15 +825,15 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         for mainarr in self.arrdatarespon{
             
-            let position = SCNVector3(mainarr.x, mainarr.y , mainarr.z)
-            
-            let mars = createArrow(at: position,at: mainarr.r)
+            let position = SCNVector3(mainarr.x, mainarr.y, mainarr.z)
+            let euler = SCNVector3(mainarr.a, mainarr.b, mainarr.c)
+            let mars = createArrow(at: position, at: euler, at: mainarr.r)
             scene.rootNode.addChildNode(mars)
             sceneView.scene = scene
             
         }
         self.removeSpinner()
-        speech("เดินตามลูกศรเพื่อไปยังจุดหมายได้เลย")
+        print("--- Mark direction completed ---")
         
     }
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
