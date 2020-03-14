@@ -143,24 +143,12 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         print("viewDidLoad")
 
-//        let position = SCNVector3(0, -4 , -4)
-//        let euler = SCNVector3(0, 0 , 0)
-//        let mars = createArrow(at: position, at: euler, at: "robot")
-//        scene.rootNode.addChildNode(mars)
-//        sceneView.scene = scene
-        var position = SCNVector3(0, -1 , -1)
-        var euler = SCNVector3(0, 0 , 0)
-        var mars = createArrow(at: position, at: euler, at: "arrow")
-        scene.rootNode.addChildNode(mars)
-        position = SCNVector3(0, -2 , -1)
-        euler = SCNVector3(0, 360 , 0)
-        mars = createArrow(at: position, at: euler, at: "arrow")
-        scene.rootNode.addChildNode(mars)
-        position = SCNVector3(0, -3 , -1)
-        euler = SCNVector3(0, 90 , 0)
-        mars = createArrow(at: position, at: euler, at: "arrow")
+        let position = SCNVector3(0, -4 , -4)
+        let euler = SCNVector3(0, 0 , 0)
+        let mars = createArrow(at: position, at: euler, at: "robot")
         scene.rootNode.addChildNode(mars)
         sceneView.scene = scene
+    
 
         
         
@@ -183,7 +171,9 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         
         
     }
-    
+    func deg2rad(_ number: Double) -> Double {
+        return number * .pi / 180
+    }
     override func viewDidAppear(_ animated: Bool) {
         
         speechRecognizer.delegate = self
@@ -757,7 +747,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
 //                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-                                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=1"+"&rssi=75"+"&dir="+self.dir)
+                                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=3"+"&rssi=75"+"&dir="+self.dir)
                 
                 
                 print(url as Any)
@@ -817,7 +807,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         // 3
         node.position = position
         node.eulerAngles = euler
-        print("Mark y:"  + String(euler.y))
         // 4
         return node
     }
