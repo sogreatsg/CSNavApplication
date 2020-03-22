@@ -16,29 +16,20 @@ import AVFoundation
 
 
 class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDelegate,SFSpeechRecognizerDelegate{
-    
     @IBOutlet var sceneView: ARSCNView!
     var lm = CLLocationManager()
     @IBOutlet weak var recordButton: UIButton!
-//    var ipserver = "52.14.73.146"
-    var ipserver = "172.20.10.3"
-    
+    var ipserver = "52.14.73.146"
     var vSpinner : UIView?
-    
-    /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
     var beaconConstraints = [CLBeaconIdentityConstraint: [CLBeacon]]()
     var beacons = [CLProximity: [CLBeacon]]()
-    
     var langSpeech: String = "th-TH"
     var speechSynthesizer = AVSpeechSynthesizer()
-    
-    
     var speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "th-TH"))!
     var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     var recognitionTask: SFSpeechRecognitionTask?
     let audioEngine = AVAudioEngine()
-    
     var textinput = "nil"
     var checkstate = 0
     var zone = 0
@@ -56,16 +47,15 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     struct teacherjsonstruct:Decodable{
         let aka:String
         let name:String
+        let email:String
         
     }
     var arrdatateacher=[teacherjsonstruct]()
     
     struct roomjsonstruct:Decodable{
         let room:String
-        
     }
     var arrdataroom=[roomjsonstruct]()
-    
     struct responjsonstruct:Decodable{
         let r:String
         let x:Double
@@ -74,14 +64,10 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         let a:Double
         let b:Double
         let c:Double
-        
-        
     }
     var arrdatarespon=[responjsonstruct]()
     var find:String = "non"
     var type:String = "0"
-    
-    
     let t_AWS = [""]
     let t_LPP = ["หรือพล","ลืพล","ลืมพล","ลืมล","ลืมโอน","หรือผล","ลือ","เหลือ"]
     let t_ENS = ["เอิน", "เอิร์น","อื่น"]
@@ -99,31 +85,20 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     let t_SWK = ["สุวัฒชัย","สุวรรณชัย","ถ้วย","ช่วย"]
     let t_TNA = ["ธนภัทร","ธนพัฒน์"]
     let t_NSD = ["นัดทะวุด","นัดทวุฒิ","นัด"]
-    
     let r_6181 = ["618 / หนึ่ง","618ทับหนึ่ง"]
     let r_6182 = ["618 / สอง","618ทับสอง"]
     
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        
-        
-        
+       
         
         readDataTeacher()
         readDataRoom()
         recordButton.tintColor = .white
-        
         locationManager.delegate = self
-        
-        // Set the view's delegate
         sceneView.delegate = self
-        
-        // Show statistics such as fps and timing information
         sceneView.showsStatistics = false
-        
-        
         sceneView.scene = scene
         lm = CLLocationManager()
         lm.delegate = self
@@ -133,71 +108,43 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             lm.headingFilter = 5
             lm.startUpdatingHeading()
         }
-        
-        
-        // Start location services to get the true heading.
-        
         locationManager.startUpdatingLocation()
-        
         speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
-        
         print("viewDidLoad")
-
         let position = SCNVector3(0, -4 , -4)
         let euler = SCNVector3(0, 0 , 0)
         let mars = createArrow(at: position, at: euler, at: "robot")
         scene.rootNode.addChildNode(mars)
         sceneView.scene = scene
-    
-
-        
-        
-        
         let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
         //        let uuid = UUID(uuidString: "10F86430-1346-11E4-9191-0800200C9A66")
         self.locationManager.requestWhenInUseAuthorization()
-        
         // Create a new constraint and add it to the dictionary.
         let constraint = CLBeaconIdentityConstraint(uuid: uuid!)
         self.beaconConstraints[constraint] = []
-        
-        /*
-         By monitoring for the beacon before ranging, the app is more
-         energy efficient if the beacon is not immediately observable.
-         */
         let beaconRegion = CLBeaconRegion(beaconIdentityConstraint: constraint, identifier: uuid!.uuidString)
         self.locationManager.startMonitoring(for: beaconRegion)
         print("iBeacon starting")
         
-        
-    }
-    func deg2rad(_ number: Double) -> Double {
-        return number * .pi / 180
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        
-        speechRecognizer.delegate = self
-        requestAuthorization()
-        
-        
+       
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        speechRecognizer.delegate = self
+        requestAuthorization()
+    }
     
     @IBAction func micpress(_ sender: Any) {
         
-        if (checkstate == 1) {
+        if (checkstate == 0) {
             speech("ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง")
         }else{
-            
             if audioEngine.isRunning {
-                
                 audioEngine.stop()
                 recognitionRequest?.endAudio()
                 recordButton.isEnabled = false
                 print("StopRecording")
                 recordButton.tintColor = .white
-                
-                
             } else {
                 sceneView.scene.rootNode.enumerateChildNodes { (node, stop) in
                     node.removeFromParentNode()
@@ -208,29 +155,20 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 recordButton.tintColor = .systemBlue
             }
         }
-        
-        
     }
-    
-    
-    
     
     func requestAuthorization(){
         SFSpeechRecognizer.requestAuthorization { authStatus in
-            
             OperationQueue.main.addOperation {
                 switch authStatus {
                 case .authorized:
                     self.recordButton.isEnabled = true
-                    
                 case .denied:
                     self.recordButton.isEnabled = false
                     self.recordButton.setTitle("User denied access to speech recognition", for: .disabled)
-                    
                 case .restricted:
                     self.recordButton.isEnabled = false
                     self.recordButton.setTitle("Speech recognition restricted on this device", for: .disabled)
-                    
                 case .notDetermined:
                     self.recordButton.isEnabled = false
                     self.recordButton.setTitle("Speech recognition not yet authorized", for: .disabled)
@@ -247,7 +185,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             recognitionTask?.cancel()
             recognitionTask = nil
         }
-        
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(AVAudioSession.Category.record)
@@ -256,33 +193,21 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         } catch {
             print("audioSession properties weren't set because of an error.")
         }
-        
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-        
         let inputNode = audioEngine.inputNode
-        
         guard let recognitionRequest = recognitionRequest else {
             fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
         }
-        
         recognitionRequest.shouldReportPartialResults = true
-        
         recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
-            
             var isFinal = false
-            
             if result != nil {
-                
                 self.textinput = (result?.bestTranscription.formattedString)!
                 isFinal = (result?.isFinal)!
                 self.recordButton.isEnabled = true
             }
-            
-            
-            
             if error != nil || isFinal {
                 let textinputtemp:String?
-                
                 textinputtemp = result?.bestTranscription.formattedString
                 print(textinputtemp as Any)
                 self.postData(textinput: textinputtemp ?? "nil")
@@ -291,8 +216,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 self.recognitionRequest = nil
                 self.recognitionTask = nil
                 self.recordButton.isEnabled = true
-                
-                
             }
         })
         let recordingFormat = inputNode.outputFormat(forBus: 0)
@@ -305,13 +228,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         } catch {
             print("audioEngine couldn't start because of an error.")
         }
-        
-        
-        
     }
-    
-    
-    
     public func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
         if available {
             recordButton.isEnabled = true
@@ -321,76 +238,55 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             recordButton.setTitle("Recognition not available", for: .disabled)
         }
     }
-    
     func speech(_ text: String) {
-        
         print("Start Speech : "+text)
         let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string:text)
         speechUtterance.rate = AVSpeechUtteranceMaximumSpeechRate / 2
         speechUtterance.voice = AVSpeechSynthesisVoice(language: langSpeech)
         speechSynthesizer.speak(speechUtterance)
-        
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
-        
         // Run the view's session
         sceneView.session.run(configuration)
         print("viewWillAppear")
-        
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         // Pause the view's session
         sceneView.session.pause()
         for region in locationManager.monitoredRegions {
             locationManager.stopMonitoring(for: region)
         }
-        
         // Stop ranging when the view disappears.
         for constraint in beaconConstraints.keys {
             locationManager.stopRangingBeacons(satisfying: constraint)
         }
     }
-    
-    
-    
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
-        
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
         // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
     }
-    
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
     }
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
         let beaconRegion = region as? CLBeaconRegion
-        
         print("check state")
         if state == .inside {
             checkstate = 1
-            
             // Start ranging when inside a region.
             print("iBeacon inside")
             manager.startRangingBeacons(satisfying: beaconRegion!.beaconIdentityConstraint)
         } else {
             // Stop ranging when not inside a region.
             checkstate = 0
-            
-            
             print("iBeacon outside")
             manager.stopRangingBeacons(satisfying: beaconRegion!.beaconIdentityConstraint)
         }
@@ -399,48 +295,28 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         var temp = 0
         var closestBeacon:CLBeacon
         var rs:NSNumber
-        
-        /*
-         Beacons are categorized by proximity. A beacon can satisfy
-         multiple constraints and can be displayed multiple times.
-         */
-        
         let knownBeacons = beacons.filter{ $0.proximity != CLProximity.unknown }
         if (knownBeacons.count > 0) {
             closestBeacon = knownBeacons[0] as CLBeacon
-            //                print("proxraw" , closestBeacon.proximity.rawValue)
             rs = closestBeacon.minor
             temp = Int(truncating: rs)
-            //                print("proxhash" , closestBeacon.proximity.hashValue)
             let ttzone = closestBeacon.rssi * -1
-            //                 print("rssi" , ttzone)
             zoneuse = String(ttzone)
             if (ttzone != 0 ){
                 rssisum += ttzone
                 numrssi += 1
-                
             }
-            
         }
-        
         if(numrssi == 5){
             rssiavg = rssisum / numrssi
             rssi = temp
-            
-            
         }
-        
-        
-        
-        
-        
-        
     }
     
     func readDataTeacher()  {
-        
+   
         print("Starting GET Data Teacher")
-        let url = URL(string:"http://"+ipserver+":8084/WebApplication/teacherjsondata.json")
+        let url = URL(string:"http://"+ipserver+":8084/WebApplication/teachersjsondata.json")
         URLSession.shared.dataTask(with: url!) {
             (data, response, error) in
             do{if error == nil{
@@ -467,16 +343,12 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }
         }.resume()
     }
-    
     func postData(textinput:String) {
-        
         rssiuse = String(rssi)
-        var showtext:String
-        
         type = "0"
+        var showtext:String
         let formatter1 = DateFormatter()
         let formatter2 = DateFormatter()
-        
         formatter1.dateFormat = "EEEE"
         formatter2.dateFormat = "HH:mm"
         let now = Date()
@@ -492,13 +364,11 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                 type = "1"
                 print("Has been found = "+find)
                 showtext = "ห้องพักอาจารย์"
-                
             }
         }
         if type == "0"{
             print("Searching....Room in Database")
             for mainarr in self.arrdataroom{
-                
                 if textinput.contains(mainarr.room) {
                     find = mainarr.room
                     type = "1"
@@ -517,7 +387,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
                     print("Has been found = "+find)
                     showtext = "อาจารย์"+mainarr.name
                     break
-                    
                 }
             }
         }
@@ -534,7 +403,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }
         }
         if type == "0"{
-            
             for mainarr in self.r_6182{
                 if textinput.contains(mainarr) {
                     find = "6182"
@@ -734,37 +602,25 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             }
             
         }
-        
-        
         if(textinput == "nil"){
-            
             showtext = "ไม่ได้รับข้อความที่คุณค้นหา"
         }
-        
         if (type != "0"){
-            
+           
             let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา" , message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
-//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-                                               let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone=3"+"&rssi=75"+"&dir="+self.dir)
-                
-                
+                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
+//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day=Sunday"+"&timestart=18:00"+"&type="+self.type+"&zone=3"+"&rssi=75"+"&dir="+self.dir)
                 print(url as Any)
                 self.showSpinner(onView: self.view)
                 URLSession.shared.dataTask(with: url!) {
                     (data, response, error) in
                     do{if error == nil{
-                        
                         self.arrdatarespon = try JSONDecoder().decode([responjsonstruct].self, from: data!)
-//                        for mainarr in self.arrdatarespon{
-//                            print(mainarr.r,":",mainarr.x,":",mainarr.y,":",mainarr.z,":",mainarr.a,":",mainarr.b,":",mainarr.c)
-//                        }
                         print("number of list",self.arrdatarespon.count)
                         }
-                        
                         self.direction()
-                        
                     }catch{
                         print("Error in get json data respon")
                     }
@@ -776,7 +632,6 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             self.present(alert, animated: true, completion: nil)
         }else{
             print("Not found")
-            
             let alert = UIAlertController(title: "ไม่พบข้อความที่คุณค้นหา กรุณาลองใหม่อีกครั้ง", message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "try agian", style: .default, handler: { action in
                 print("try agian")
@@ -785,91 +640,80 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         }
     }
     func createArrow(at position: SCNVector3, at euler: SCNVector3, at r:String) -> SCNNode {
-        
-        // 2
-        
         let node = SCNNode()
         let scene:SCNScene
         if(r=="0"){
             scene = SCNScene(named: "art.scnassets/arrow.scn")!
         }else{
             scene = SCNScene(named: "art.scnassets/"+r+".scn")!
-            //            scene = SCNScene(named: "art.scnassets/diamond.scn")!
         }
-        
-        
         let nodeArray = scene.rootNode.childNodes
-        
         for childNode in nodeArray {
             node.addChildNode(childNode as SCNNode)
         }
-        
-        // 3
         node.position = position
         node.eulerAngles = euler
-        // 4
         return node
     }
     func direction()  {
-        
+        var status = 0
+        var email = "nil"
         for mainarr in self.arrdatarespon{
-            
+            if (mainarr.r == "0000"){
+                status = 1
+            }
             let position = SCNVector3(mainarr.x, mainarr.y, mainarr.z)
             let euler = SCNVector3(mainarr.a, mainarr.b, mainarr.c)
             let mars = createArrow(at: position, at: euler, at: mainarr.r)
             scene.rootNode.addChildNode(mars)
             sceneView.scene = scene
-            
         }
+        for mainarr in self.arrdatateacher{
+            if (mainarr.aka == find){
+                email = mainarr.email
+            }
+        }
+       
         self.removeSpinner()
+       
+        if (status == 1){
+           speech(email)
+        }
         print("--- Mark direction completed ---")
-        
     }
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        
         if newHeading.headingAccuracy < 0 {
             return
         }
         if (dir != "null") {
             lm.stopUpdatingHeading()
         }
-        
         // Get the heading(direction)
         let heading: CLLocationDirection = ((newHeading.trueHeading > 0) ?
             newHeading.trueHeading : newHeading.magneticHeading);
         UIView.animate(withDuration: 0.5) {
-            
         }
         var tempdir = Double(heading)
         tempdir.round()
         dir = String(tempdir)
         print("Direction of user : "+dir)
-        
-        
-        
     }
     func showSpinner(onView : UIView) {
-           let spinnerView = UIView.init(frame: onView.bounds)
-           spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
         let ai = UIActivityIndicatorView.init(style: .large)
-           ai.startAnimating()
-           ai.center = spinnerView.center
-           
-           DispatchQueue.main.async {
-               spinnerView.addSubview(ai)
-               onView.addSubview(spinnerView)
-           }
-           
-           vSpinner = spinnerView
-       }
-       
-       func removeSpinner() {
-           DispatchQueue.main.async {
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        vSpinner = spinnerView
+    }
+    func removeSpinner() {
+        DispatchQueue.main.async {
             self.vSpinner?.removeFromSuperview()
             self.vSpinner = nil
-           }
-       }
-    
-    
+        }
+    }
 }
-
