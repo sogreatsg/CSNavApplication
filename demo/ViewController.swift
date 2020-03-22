@@ -88,6 +88,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     let r_6181 = ["618 / หนึ่ง","618ทับหนึ่ง"]
     let r_6182 = ["618 / สอง","618ทับสอง"]
     
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

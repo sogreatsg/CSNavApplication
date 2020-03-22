@@ -32,10 +32,6 @@
                                     <segue destination="BV1-FR-VrT" kind="presentation" identifier="Index-Main" modalPresentationStyle="fullScreen" id="emK-LB-18P"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="intro" translatesAutoresizingMaskIntoConstraints="NO" id="rv6-24-gcs">
-                                <rect key="frame" x="57" y="19" width="260" height="759"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
-                            </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVG-Mt-RtF" userLabel="infoButton">
                                 <rect key="frame" x="310" y="47" width="26" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -47,19 +43,39 @@
                                     <segue destination="0PO-FP-nIr" kind="presentation" identifier="Index-Info" id="qPU-Ro-OYn"/>
                                 </connections>
                             </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hw0-bv-5Iz">
+                                <rect key="frame" x="33" y="99" width="309" height="577"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="NHG-P2-C7Q"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="45k-aL-C4f"/>
+                            </scrollView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="OKF-vC-xyl">
+                                <rect key="frame" x="168" y="708" width="39" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <color key="pageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </pageControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CSNav Application" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="v2H-Bm-Xlc">
+                                <rect key="frame" x="116" y="49" width="142" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.27450980392156865" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.27843137254901962" blue="0.6705882352941176" alpha="1" colorSpace="calibratedRGB"/>
                         <viewLayoutGuide key="safeArea" id="Bvf-aC-NEm"/>
                     </view>
                     <navigationItem key="navigationItem" id="4PN-Fc-3yU"/>
                     <connections>
                         <outlet property="button" destination="WYa-lf-sqS" id="vjr-pg-0PH"/>
-                        <outlet property="intro" destination="rv6-24-gcs" id="dpL-Hc-ecb"/>
+                        <outlet property="pageControl" destination="OKF-vC-xyl" id="BDt-l7-pH1"/>
+                        <outlet property="scrollView" destination="hw0-bv-5Iz" id="2Nx-f5-RIG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BCh-Kb-eTc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-728.98550724637687" y="62.946428571428569"/>
+            <point key="canvasLocation" x="-730.39999999999998" y="62.807881773399018"/>
         </scene>
         <!--InfoViewController-->
         <scene sceneID="c9T-zR-IXr">
@@ -139,7 +155,6 @@
     </scenes>
     <resources>
         <image name="exclamationmark.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="intro" width="1124" height="2200"/>
         <image name="mic.circle.fill" catalog="system" width="64" height="60"/>
     </resources>
 </document>
