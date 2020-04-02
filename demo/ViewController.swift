@@ -137,7 +137,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
     
     @IBAction func micpress(_ sender: Any) {
         
-        if (checkstate == 0) {
+        if (checkstate == 1) {
             speech("ตอนนี้คุณอยู่นอกพื้นที่ให้บริการ กรุณาลองใหม่อีกครั้ง")
         }else{
             if audioEngine.isRunning {
@@ -611,8 +611,8 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
             let alert = UIAlertController(title: "คุณต้องการที่จะค้นหา" , message: showtext, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
                 print("Push : Yes")
-                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
-//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day=Sunday"+"&timestart=18:00"+"&type="+self.type+"&zone=3"+"&rssi=75"+"&dir="+self.dir)
+//                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day="+self.datedayuse+"&timestart="+self.datetimeuse+"&type="+self.type+"&zone="+self.rssiuse+"&rssi="+String(self.rssiavg)+"&dir="+self.dir)
+                let url = URL(string:"http://"+self.ipserver+":8084/WebApplication/get.jsp?text="+self.find+"&day=Monday"+"&timestart=13:00"+"&type="+self.type+"&zone=3"+"&rssi=75"+"&dir="+self.dir)
                 print(url as Any)
                 self.showSpinner(onView: self.view)
                 URLSession.shared.dataTask(with: url!) {
