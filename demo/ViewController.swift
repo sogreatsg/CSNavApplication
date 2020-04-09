@@ -112,6 +112,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         locationManager.startUpdatingLocation()
         speech("สวัสดีค่ะ กดปุ่มไมโครโฟนและพูดเพื่อค้นหาได้เลย")
         print("viewDidLoad")
+        
         let position = SCNVector3(0, -4 , -4)
         let euler = SCNVector3(0, 0 , 0)
         let mars = createArrow(at: position, at: euler, at: "robot")
@@ -119,6 +120,7 @@ class ViewController: UIViewController, ARSCNViewDelegate,CLLocationManagerDeleg
         sceneView.scene = scene
         let uuid = UUID(uuidString: "B5B182C7-EAB1-4988-AA99-B5C1517008D9")
         //        let uuid = UUID(uuidString: "10F86430-1346-11E4-9191-0800200C9A66")
+        
         self.locationManager.requestWhenInUseAuthorization()
         // Create a new constraint and add it to the dictionary.
         let constraint = CLBeaconIdentityConstraint(uuid: uuid!)
